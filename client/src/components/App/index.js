@@ -46,7 +46,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router onload="getConnection()">
+      <Router>
         <div className="app">
           <Navigation />
 
@@ -81,7 +81,14 @@ class App extends Component {
               exact path={routes.GAIN_SIMULATOR}
               component={GainSimulator}
             />
-
+            <Route
+              exact path={routes.TEAM_PAGE}
+              component={TeamPage}
+            />
+            <Route
+              exact path={routes.ROOM_PAGE}
+              component={RoomPage}
+            />
             <Route component={PageNotFound}/>
           </ Switch>
 
