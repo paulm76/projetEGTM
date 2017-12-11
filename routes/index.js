@@ -4,10 +4,11 @@ var mysql = require('mysql');
 var cors = require('cors');
 
 var app = require('../app.js');
+var conf = require('../mysql/conf.js');
 
 /* GET home page. */
 router.use(function(req, res, next){
-  connection = mysql.createPool({host: '127.0.0.1', user: 'admin', password: 'pwd',	database: 'egtmbd'});
+  connection = mysql.createPool(conf);
   next();
 });
 

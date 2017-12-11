@@ -20,6 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use("/mysql", express.static(path.join(__dirname, '/mysql')));
 app.use("/public", express.static(path.join(__dirname, '/public')));
 
 app.use('/', index);

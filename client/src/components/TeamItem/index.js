@@ -31,8 +31,8 @@ class TeamItem extends React.Component {
     var hours = team.Date.substring(11,13);
     var day = team.Date.substring(8,10);
     var month = team.Date.substring(5,7);
-    var itemStyle = { width: '200px', borderTop: 'none', paddingTop: '5px', marginRight: '10px' }
-    var contentStyle = { backgroundImage: "url('" + team.Photo + "')", backgroundSize: '200px auto', backgroundRepeat: 'no-repeat', color:'white' };
+    var itemStyle = { borderTop: 'none', paddingTop: '5px', marginLeft: '20px' }
+    var contentStyle = { width: '270px', height: '120px', backgroundImage: "url('" + team.Photo + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white' };
     var headerStyle = { color: 'white' }
 
     return(
@@ -40,15 +40,15 @@ class TeamItem extends React.Component {
     <List.Content style={ contentStyle }>
 
       <List.Description as="div">
-        <List.Header as="h4" style={ headerStyle }>
-          <p>{team.Room}</p>
+        <List.Header as="h3" style={ headerStyle }>
+          <p>&nbsp;&nbsp;{team.Room}</p>
         </List.Header>
           
       </List.Description>
-          <p><br />
-            {team.Nb_places_max - team.Nb_joueur} places restantes<br />
-            Le {day}/{month} à {hours}:{minutes}
-          </p>
+          <p><br /><strong>
+            &nbsp;&nbsp;&nbsp;&nbsp;{team.Nb_places_max - team.Nb_joueur} places restantes<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;Le {day}/{month} à {hours}:{minutes}
+          </strong></p>
     </List.Content>
   </List.Item>);
   }
