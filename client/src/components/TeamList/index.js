@@ -4,7 +4,6 @@ import { List } from 'semantic-ui-react';
 import TeamItem from '../TeamItem';
 
 import mysql from 'mysql';
-import connection from '../../mysql/mysql';
 
 const TeamList = ({
   teams,
