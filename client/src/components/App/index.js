@@ -9,6 +9,8 @@ import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 import AccountPage from '../Account';
 import GainSimulator from '../GainSimulator';
+import TeamPage from '../TeamPage';
+import RoomPage from '../RoomPage';
 import Footer from '../Footer';
 import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
@@ -29,19 +31,6 @@ class App extends Component {
       teamsLoading: false,
       teamsError: null,
     };
-
-    this.onFetchTeams = this.onFetchTeams.bind(this);
-  }
-
-  componentDidMount() {
-    var headers = new Headers();
-    var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
-    fetch('http://localhost:3001/', init).then(res => res.json()).then(teams => this.setState({ teams: teams, }));
-  }
-
-  onFetchTeams() {
-    this.setState({ teamsLoading: true });
-    this.setState({ teamsLoading: false });
   }
 
   render() {

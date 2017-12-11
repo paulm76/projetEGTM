@@ -18,12 +18,6 @@ class TeamItem extends React.Component {
 
     this.state = { ...INITIAL_STATE };
   }
-/*
-  componentDidMount(){
-    const team = this.props;
-    this.setState({team});
-  }
-*/
   render(){
 
     const {team} = this.props;
@@ -31,25 +25,27 @@ class TeamItem extends React.Component {
     var hours = team.Date.substring(11,13);
     var day = team.Date.substring(8,10);
     var month = team.Date.substring(5,7);
-    var itemStyle = { borderTop: 'none', paddingTop: '5px', marginLeft: '20px' }
-    var contentStyle = { width: '270px', height: '120px', backgroundImage: "url('" + team.Photo + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white' };
+    var itemStyle = { width: '270px', height: '120px', borderTop: 'none', paddingTop: '5px', marginLeft: '20px' }
+    var contentStyle = { backgroundImage: "url('" + team.Photo + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white' };
     var headerStyle = { color: 'white' }
 
     return(
   <List.Item style={ itemStyle }>
-    <List.Content style={ contentStyle }>
+    <Link to={'/team?teamId=$team.$team.id'}>
+      <List.Content style={ contentStyle }>
 
-      <List.Description as="div">
-        <List.Header as="h3" style={ headerStyle }>
-          <p>&nbsp;&nbsp;{team.Room}</p>
-        </List.Header>
-          
-      </List.Description>
-          <p><br /><strong>
-            &nbsp;&nbsp;&nbsp;&nbsp;{team.Nb_places_max - team.Nb_joueur} places restantes<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;Le {day}/{month} à {hours}:{minutes}
-          </strong></p>
-    </List.Content>
+        <List.Description as="div">
+          <List.Header as="h3" style={ headerStyle }>
+            <p>&nbsp;&nbsp;{team.Room}</p>
+          </List.Header>
+            
+        </List.Description>
+            <p><br /><strong>
+              &nbsp;&nbsp;&nbsp;&nbsp;{team.Nb_places_max - team.Nb_joueur} places restantes<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;Le {day}/{month} à {hours}:{minutes}
+            </strong></p>
+      </List.Content>
+    </Link>
   </List.Item>);
   }
 }

@@ -26,9 +26,19 @@ const Filter = ({
 }) => 
 
 	<FilterForm>
-	  <FilterContainer>
+	  <FilterContainer style={{ display: "none" }}>
 		<Label for="citySelect">Ville</Label>
 		<Select id="citySelect" onChange={this.onSelectCity} options={cityArray}/>
+	  </FilterContainer>
+
+	  <FilterContainer>
+	  	<Label for="dateInput">Date</Label>
+	  	<Input id="dateInput" type="date" />
+	  </FilterContainer>
+
+	  <FilterContainer>
+	  	<Label for="playerNbInput">Nombre de place voulues</Label>
+	  	<Input id="playerNbInput" type="number" min="1" />
 	  </FilterContainer>
 
 	  <FilterContainer>
@@ -52,11 +62,6 @@ const Filter = ({
 	  </FilterContainer>
 
 	  <FilterContainer>
-	  	<Label for="playerNbInput">Nombre de place voulues</Label>
-	  	<Input id="playerNbInput" type="number" min="1" />
-	  </FilterContainer>
-
-	  <FilterContainer>
 	  	<Label for="hourMinInput">Heure minimum</Label>
 	  	<Input id="hourMinInput" type="number" />
 	  </FilterContainer>
@@ -64,11 +69,6 @@ const Filter = ({
 	  <FilterContainer>
 	  	<Label for="hourMaxInput">Heure maximum</Label>
 	  	<Input id="hourMaxInput" type="number" />
-	  </FilterContainer>
-
-	  <FilterContainer>
-	  	<Label for="dateInput">Date</Label>
-	  	<Input id="dateInput" type="date" />
 	  </FilterContainer>
 
 	</FilterForm>

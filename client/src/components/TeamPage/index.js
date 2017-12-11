@@ -1,15 +1,36 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
-import mysql from 'mysql';
-import Form from '../Form';
-import { Input, Button, TextArea,  Select, Checkbox } from 'semantic-ui-react';
+import React, { Component } from 'react';
 import TeamView from './TeamView'
 
 
-const TeamPage = ({match}) => {
-  return(<TeamView id={match.params.teamid} />)
+class TeamPage extends Component {
+	constructor(props) {
+    super(props);
+
+    this.state = {
+      teams: [],
+      teamId: null,
+    };
+
+    this.getTeamId = this.getTeamId.bind(this);
+  }
+
+  getTeamId() {
+  	this.setState({ teamId: this.props.location.query.teamId, });
+  }
+
+  componentDidMount() {
+    var headers = new Headers();
+    var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+    fetch('http://localhost:3001/team?teamId=' + this.state.teamId, init).then(res => res.json()).then(teams => this.setState({ teams: teams, }));
+  }
+
+  render() {
+  	return(
+  	  <TeamView teamId={ this.state.teamId } />
+  	);
+  }
 }
 
 export default TeamPage;

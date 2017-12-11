@@ -10,3 +10,5 @@ export const ESCPAPEGAME = '/escapegamelist';
 export const SELL_CONDITION = '/sell-condition';
 export const ABOUT = '/about';
 export const CONTACT = '/contact';
+export const TEAM_PAGE = '/team';
+export const ROOM_PAGE = '/room';

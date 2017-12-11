@@ -1,36 +1,29 @@
-import React from 'react';
-import { Loader } from 'semantic-ui-react';
+'use strict';
 
-import TeamsList from '../TeamList';
-import Filter from '../Filter';
-import FrontPageForm from '../FrontPageForm';
+import React, { Component } from 'react';
+import FrontPageView from './FrontPageView'
 
-const FrontPage = ({
-  teams,
-  teamsLoading,
-  teamsError,
-}) => {
-  if (teamsError) {
-    return <p>Uuups, something went wrong.</p>;
+
+class FrontPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      teams: [],
+    };
   }
 
-  if (teamsLoading) {
-    return <Loader active inline="centered" />;
+  componentDidMount() {
+    var headers = new Headers();
+    var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+    fetch('http://localhost:3001/', init).then(res => res.json()).then(teams => this.setState({ teams: teams, }));
   }
 
-  if (!teams) {
-    return <p>Uuups, there are no more front page stories for you.</p>;
+  render() {
+  	return(
+  	  <FrontPageView teams={ this.state.teams } />
+  	);
   }
-
-  return(
-    <FrontPageForm>
-      <Filter />
-      <TeamsList
-      teams={teams}
-      isFrontPage={true}
-      />
-    </FrontPageForm>
-  );
 }
 
 export default FrontPage;
