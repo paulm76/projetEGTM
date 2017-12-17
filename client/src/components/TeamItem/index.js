@@ -28,10 +28,11 @@ class TeamItem extends React.Component {
     var itemStyle = { width: '270px', height: '120px', borderTop: 'none', paddingTop: '5px', marginLeft: '20px' }
     var contentStyle = { backgroundImage: "url('" + team.Photo + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white' };
     var headerStyle = { color: 'white' }
+    var linkToTeam = '/team?teamId=' + team.id
 
     return(
   <List.Item style={ itemStyle }>
-    <Link to={'/team?teamId=$team.$team.id'}>
+    <Link to={ linkToTeam }>
       <List.Content style={ contentStyle }>
 
         <List.Description as="div">

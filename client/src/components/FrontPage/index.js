@@ -13,7 +13,7 @@ class FrontPage extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     var headers = new Headers();
     var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
     fetch('http://localhost:3001/', init).then(res => res.json()).then(teams => this.setState({ teams: teams, }));
