@@ -8,6 +8,7 @@ import GoogleMapMarker from '../GoogleMapMarker'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import findPrice from '../../scripts/findPrice.js'
+import TeamMembers from '../TeamMembers'
 
 class TeamPage extends Component {
   constructor(props) {
@@ -103,9 +104,7 @@ class TeamPage extends Component {
 	            </Segment>
 
 	            <h2>Membres </h2>
-	            <List>
-	              {users.map(member => <List.Item key={member.id}> {member.Prenom}  {member.Nom.substring(0,1)}.</List.Item>)}
-	            </List>
+	            <TeamMembers members={users} text ratio={1} idadmin={team[0].id_admin} libres={room[0].Nb_places_max-team[0].Nb_joueur} />
 	            <h2>Localisation </h2>
 	            <GoogleMapMarker
 	              isMarkerShown
