@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var team = require('./routes/team');
+var signup = require('./routes/signup');
 
 var app = express();
 
@@ -21,12 +21,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("/mysql", express.static(path.join(__dirname, '/mysql')));
 app.use("/public", express.static(path.join(__dirname, '/public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/team', team);
+app.use('/signup',signup);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
