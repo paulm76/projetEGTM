@@ -103,7 +103,7 @@ class TeamPage extends Component {
             </Segment>
 
             <h2>Membres </h2>
-            <TeamMembers  members={users} text ratio={1} libres={room[0].Nb_places_max-team[0].Nb_joueur}>
+            <TeamMembers  members={users} text ratio={1} idadmin={team[0].id_admin} libres={room[0].Nb_places_max-team[0].Nb_joueur}>
             <h2>Localisation </h2>
             <GoogleMapMarker
               isMarkerShown
