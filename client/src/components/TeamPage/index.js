@@ -8,6 +8,7 @@ import GoogleMapMarker from '../GoogleMapMarker'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import findPrice from '../../scripts/findPrice.js'
+import TeamMembers from '../TeamMembers'
 
 class TeamPage extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class TeamPage extends Component {
       places.push({value: i, label: i + 1});
     }
 
-    var realPrice; 
+    var realPrice;
 
     if (this.state.price == 0){
     	realPrice = prices[usersLen - room[0].Nb_places_min + 1]; //a revoir
@@ -93,7 +94,7 @@ class TeamPage extends Component {
             <Segment vertical>
               {(team[0].Description!='' && team[0].Description) &&
                 <span>
-                  <h2>A propos de l'équipe</h2>
+                  <h2>A propos de l équipe</h2>
                   <p>{team[0].Description}</p>
                 </span>
               }
@@ -102,9 +103,7 @@ class TeamPage extends Component {
             </Segment>
 
             <h2>Membres </h2>
-            <List>
-              {users.map(member => <List.Item key={member.id}> {member.Prenom}  {member.Nom.substring(0,1)}.</List.Item>)}
-            </List>
+            <TeamMembers  members={users} text ratio={1} libres={room[0].Nb_places_max-team[0].Nb_joueur}>
             <h2>Localisation </h2>
             <GoogleMapMarker
               isMarkerShown
@@ -140,7 +139,7 @@ class TeamPage extends Component {
 
         </Grid>
       </div>
-    ); 
+    );
   } else {
     return <p></p>
   }
