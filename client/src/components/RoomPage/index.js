@@ -18,15 +18,10 @@ class RoomPage extends React.Component {
     };
 
     this.handleContextRef = this.handleContextRef.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.setDate = this.setDate.bind(this);
   }
 
   handleContextRef = contextRef => this.setState({ contextRef : contextRef })
-
-  handleChange = function(event){
-
-  }
 
   setDate(date){
   	var days = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
@@ -43,12 +38,12 @@ class RoomPage extends React.Component {
 	return days[dayNumber] + ' ' + day + ' ' + months[month-1] + ' ' + year + ' à ' + hour + ':' + minute;
   }
 
-  componentDidMount() {
+  componentWillMount() {
     var query = this.props.location.search
   	var room = query.substring(6, query.length);
-	var headers = new Headers();
-	var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
-	fetch('http://localhost:3001/room?room=' + room, init).then(res => res.json()).then(roomInfo => this.setState({ roomInfo: roomInfo, }));
+	  var headers = new Headers();
+	  var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+	  fetch('http://localhost:3001/room?room=' + room, init).then(res => res.json()).then(roomInfo => this.setState({ roomInfo: roomInfo, }));
   }
 
   render() {
@@ -59,12 +54,14 @@ class RoomPage extends React.Component {
 	    var escape = JSON.parse(this.state.roomInfo[1]);
 	    var teams = JSON.parse(this.state.roomInfo[2]);
 
+      var escapeName = escape[0].Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
+
 	    return (
 	      <div >
 	      	<Grid centered columns={2} stackable>
         	  <Grid.Column computer='8'>
           		<Segment vertical>
-            	  <h1>{room[0].Nom}</h1> <h3>{escape[0].Nom}</h3>
+            	  <h1>{room[0].Nom}</h1> <Link to={`/escape?escape=${escapeName}`}><h3>{escape[0].Nom}</h3></Link>
             	  <Icon name='marker' />{escape[0].Adresse}, {escape[0].Code_postal} {escape[0].Ville}
           		</Segment>
 
@@ -84,7 +81,7 @@ class RoomPage extends React.Component {
           		  <p>{room[0].Description}</p>
           		</Segment>
           		<h2 style={{ marginBottom: '20px' }}>Equipe en cours </h2>
-				{teams.map(team => <List.Item key={team.id}> <Link to={`/team?teamId=${team.id}`}><h3>{team.Titre}</h3></Link> <Icon name='calendar' /> {this.setDate(team.Date)} </List.Item>)}
+				      {teams.map(team => <List.Item key={team.id}> <Link to={`/team?teamId=${team.id}`}><h3>{team.Titre}</h3></Link> <Icon name='calendar' /> {this.setDate(team.Date)} </List.Item>)}
           		<h2>Localisation </h2>
           		<GoogleMapMarker
             	  isMarkerShown

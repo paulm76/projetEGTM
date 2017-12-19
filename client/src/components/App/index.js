@@ -11,6 +11,7 @@ import AccountPage from '../Account';
 import GainSimulator from '../GainSimulator';
 import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
+import EscapePage from '../EscapePage';
 import Footer from '../Footer';
 import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
@@ -77,6 +78,10 @@ class App extends Component {
             <Route
               exact path={routes.ROOM_PAGE}
               component={RoomPage}
+            />
+            <Route
+              exact path={routes.ESCAPE_PAGE}
+              component={EscapePage}
             />
             <Route component={PageNotFound}/>
           </ Switch>

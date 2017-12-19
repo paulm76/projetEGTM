@@ -67,6 +67,7 @@ class TeamPage extends Component {
 	    }
 
 	    var linkToRoom = '/room?room=' + room[0].Nom.replace(" ","_");
+	    var linkToEscape = '/escape?escape=' + room[0].Escape_game.replace(" ","_").replace(" ","_").replace(" ","_").replace(" ","_");
 
 	    return (
 	      <div >
@@ -74,7 +75,8 @@ class TeamPage extends Component {
 	          <Grid.Column computer='8'>
 	            <Segment vertical>
 	              <h1>{team[0].Titre}</h1>
-	              <Link to={linkToRoom}><h1>{room[0].Nom}</h1></Link> <h3>{room[0].Escape_game}</h3>
+	              <h1><Link to={linkToRoom}>{room[0].Nom}</Link> </h1>
+	              <h3><Link to={linkToEscape}>{room[0].Escape_game}</Link></h3>
 	              <Icon name='marker' />{room[0].Adresse}, {room[0].Code_postal} {room[0].Ville}
 	              &nbsp;&nbsp;<Icon name='calendar' /> {team[0].Date}
 	            </Segment>
