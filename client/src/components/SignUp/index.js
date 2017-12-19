@@ -44,12 +44,52 @@ class SignUpForm extends Component {
           .catch(error => {
             this.setState(() => ({ error }));
           });
-
+o
       })
       .catch(error => {
         this.setState(() => ({ error }));
       });
 */
+    //fetch
+    /*
+    fetch('https://davidwalsh.name/submit', {
+	method: 'post',
+	body: new FormData(document.getElementById('comment-form'))
+});
+fetch(url, {
+    method: 'post',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+    body: 'foo=bar&lorem=ipsum'
+  })
+  .then(json)
+  .then(function (data) {
+    console.log('Request succeeded with JSON response', data);
+  })
+  .catch(function (error) {
+    console.log('Request failed', error);
+  });
+  var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+*/
+var url="http://localhost:3001/signup";
+//var form=new FormData(document.getElementById('signupform'));
+return fetch(url, {
+    method: 'post',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+    mode: 'cors',
+    body: 'username='+username+'&email='+email+'&password='+passwordOne
+  })
+  //.then(json)
+  .then(function (data) {
+    console.log(data.json());
+    console.log('Request succeeded with JSON response', data);
+  })
+  .catch(function (error) {
+    console.log('Request failed', error);
+  });
     event.preventDefault();
   }
 
@@ -68,33 +108,33 @@ class SignUpForm extends Component {
       username === '';
 
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit} id='signupform'>
         <Input
           value={username}
           onChange={event => this.setState({ username: event.target.value })}
           type="text"
-          placeholder="Full Name"
+          placeholder="Prénom"
         />
         <Input
           value={email}
           onChange={event => this.setState({ email: event.target.value })}
           type="text"
-          placeholder="Email Address"
+          placeholder="Addresse Email"
         />
         <Input
           value={passwordOne}
           onChange={event => this.setState({ passwordOne: event.target.value })}
           type="password"
-          placeholder="Password"
+          placeholder="Mot de passe"
         />
         <Input
           value={passwordTwo}
           onChange={event => this.setState({ passwordTwo: event.target.value })}
           type="password"
-          placeholder="Confirm Password"
+          placeholder="Confirmer le Mot de passe"
         />
         <Button disabled={isInvalid} type="submit">
-          Sign Up
+          Se connecter
         </Button>
 
         { error && <p>{error.message}</p> }
