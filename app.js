@@ -8,10 +8,13 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var team = require('./routes/team');
+var team = require('./routes/team');
 var room = require('./routes/room');
 var escape = require('./routes/escape');
 var signup = require('./routes/signup');
 var filter = require('./routes/filter');
+
+var mangopay = require('./routes/mangopay');
 
 var app = express();
 
@@ -30,6 +33,7 @@ app.use("/public", express.static(path.join(__dirname, '/public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/team', team);
+app.use('/mangopay', mangopay);
 app.use('/room', room);
 app.use('/escape', escape);
 app.use('/signup',signup);

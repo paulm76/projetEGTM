@@ -6,6 +6,8 @@ import Form from '../Form';
 //import { auth, db } from '../../firebase';
 import * as routes from '../../constants/routes';
 
+
+
 const INITIAL_STATE = {
   username: '',
   email: '',
@@ -31,49 +33,8 @@ class SignUpForm extends Component {
     const {
       history,
     } = this.props;
-/*
-    auth.doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
 
-        // Create a user in your own accessible Firebase Database too
-        db.doCreateUser(authUser.uid, username, email)
-          .then(() => {
-            this.setState(() => ({ ...INITIAL_STATE }));
-            history.push(routes.FRONTPAGE);
-          })
-          .catch(error => {
-            this.setState(() => ({ error }));
-          });
-o
-      })
-      .catch(error => {
-        this.setState(() => ({ error }));
-      });
-*/
-    //fetch
-    /*
-    fetch('https://davidwalsh.name/submit', {
-	method: 'post',
-	body: new FormData(document.getElementById('comment-form'))
-});
-fetch(url, {
-    method: 'post',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-    },
-    body: 'foo=bar&lorem=ipsum'
-  })
-  .then(json)
-  .then(function (data) {
-    console.log('Request succeeded with JSON response', data);
-  })
-  .catch(function (error) {
-    console.log('Request failed', error);
-  });
-  var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
-*/
 var url="http://localhost:3001/signup";
-//var form=new FormData(document.getElementById('signupform'));
 return fetch(url, {
     method: 'post',
     headers: {
