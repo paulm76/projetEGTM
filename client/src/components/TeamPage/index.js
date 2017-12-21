@@ -7,8 +7,9 @@ import _ from 'lodash';
 import GoogleMapMarker from '../GoogleMapMarker'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import findPrice from '../../scripts/findPrice.js'
-import TeamMembers from '../TeamMembers'
+import findPrice from '../../scripts/findPrice.js';
+import TeamMembers from '../TeamMembers';
+import formatedDate from '../../scripts/formatedDate.js';
 
 class TeamPage extends Component {
   constructor(props) {
@@ -77,8 +78,8 @@ class TeamPage extends Component {
 	              <h1>{team[0].Titre}</h1>
 	              <h1><Link to={linkToRoom}>{room[0].Nom}</Link> </h1>
 	              <h3><Link to={linkToEscape}>{room[0].Escape_game}</Link></h3>
-	              <Icon name='marker' />{room[0].Adresse}, {room[0].Code_postal} {room[0].Ville}
-	              &nbsp;&nbsp;<Icon name='calendar' /> {team[0].Date}
+	              <Icon name='marker' />{room[0].Adresse}, {room[0].Code_postal} {room[0].Ville} <br />
+	              <Icon name='calendar' /> {formatedDate(team[0].Date)}
 	            </Segment>
 
 	            <Segment vertical>

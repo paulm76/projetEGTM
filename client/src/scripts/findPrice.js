@@ -1,9 +1,14 @@
+import formatedDate from './formatedDate.js'
+
 export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, datesSpeciales){
 	var day = date.split('T')[0];
 	var daySplit = day.split('-');
 	var time = date.split('T')[1];
 	var timeSplit = time.split(':');
 	if (tarifsPlein && tarifsPlein!='null'){
+		if (isWeekEnd(date)){
+			return tarifsPlein;
+		}
 		if (timeChange && timeChange!='null'){
 			if (isFullTime(timeSplit,timeChange)){
 				return tarifsPlein;
@@ -19,6 +24,17 @@ export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, da
 	return tarifsCreux;
 }
 
+function isWeekEnd(date){
+	var day = formatedDate(date);
+	var spaceRegex = / /g;
+	var index = spaceRegex.exec(day).index;
+	day = day.substring(0,index);
+	if (day === "Samedi" || day === "Dimanche"){
+		return true;
+	}
+	return false;
+}
+
 function isFullTime(time, timeChange){
 	var timeChangeSplit = timeChange.split(':');
 	if (time[0]>=timeChangeSplit[0]){
@@ -31,20 +47,20 @@ function isFullTime(time, timeChange){
 
 function splitDates(datesSpeciales){
 	var datesSpecialesLen = datesSpeciales.length;
-	var formatedDates = [];
+	var datesSpecialesFormated = [];
 	for (var i=0; i<datesSpecialesLen; i++){
 		if (typeof datesSpeciales[i] == "string"){
-			formatedDates.push(datesSpeciales[i].split('-'));
+			datesSpecialesFormated.push(datesSpeciales[i].split('-'));
 		} else {
 			var dateLen = datesSpeciales[i].length;
 			var temp = [];
 			for (var j=0; j<dateLen; j++){
 				temp.push(datesSpeciales[i][j].split('-'));
 			}
-			formatedDates.push(temp);
+			datesSpecialesFormated.push(temp);
 		}
 	}
-	return formatedDates;
+	return datesSpecialesFormated;
 }
 
 function isSpecialDate(day, datesSpeciales){
@@ -56,7 +72,7 @@ function isSpecialDate(day, datesSpeciales){
 			}
 		} else {
 			var dateLen = datesSpeciales[i].length;
-			if (datesSpeciales[i][0][0] < day[0] && datesSpeciales[i][1][0] > day[0] && datesSpeciales[i][0][1] < day[0] && datesSpeciales[i][1][1] > day[0] && datesSpeciales[i][0][2] < day[0] && datesSpeciales[i][1][2] > day[0]){
+			if (datesSpeciales[i][0][0] <= day[0] && datesSpeciales[i][1][0] >= day[0] && datesSpeciales[i][0][1] <= day[0] && datesSpeciales[i][1][1] >= day[0] && datesSpeciales[i][0][2] <= day[0] && datesSpeciales[i][1][2] >= day[0]){
 				return true;
 			}
 		}
