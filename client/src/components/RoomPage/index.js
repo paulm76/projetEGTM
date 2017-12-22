@@ -7,6 +7,7 @@ import _ from 'lodash';
 import GoogleMapMarker from '../GoogleMapMarker'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import formatedDate from '../../scripts/formatedDate.js';
 
 class RoomPage extends React.Component {
   constructor(props) {
@@ -18,25 +19,9 @@ class RoomPage extends React.Component {
     };
 
     this.handleContextRef = this.handleContextRef.bind(this);
-    this.setDate = this.setDate.bind(this);
   }
 
   handleContextRef = contextRef => this.setState({ contextRef : contextRef })
-
-  setDate(date){
-  	var days = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
-  	var months = ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
-  	var year = date.substring(0,4);
-  	var yearInt = parseInt(year);
-  	var month = date.substring(5,7);
-  	var monthInt = parseInt(month);
-  	var day = date.substring(8,10);
-  	var dayInt = parseInt(day);
-  	var hour = date.substring(11,13);
-  	var minute = date.substring(14,16);
-  	var dayNumber = (dayInt+yearInt+Math.trunc(yearInt/4)-Math.trunc(yearInt/100)+Math.trunc(yearInt/400)+Math.trunc((31*monthInt)/12))%7;
-	return days[dayNumber] + ' ' + day + ' ' + months[month-1] + ' ' + year + ' à ' + hour + ':' + minute;
-  }
 
   componentWillMount() {
     var query = this.props.location.search
@@ -81,7 +66,7 @@ class RoomPage extends React.Component {
           		  <p>{room[0].Description}</p>
           		</Segment>
           		<h2 style={{ marginBottom: '20px' }}>Equipe en cours </h2>
-				      {teams.map(team => <List.Item key={team.id}> <Link to={`/team?teamId=${team.id}`}><h3>{team.Titre}</h3></Link> <Icon name='calendar' /> {this.setDate(team.Date)} </List.Item>)}
+				      {teams.map(team => <List.Item key={team.id}> <Link to={`/team?teamId=${team.id}`}><h3>{team.Titre}</h3></Link> <Icon name='calendar' /> {formatedDate(team.Date)} </List.Item>)}
           		<h2>Localisation </h2>
           		<GoogleMapMarker
             	  isMarkerShown
