@@ -14,3 +14,4 @@ export const CONTACT = '/contact';
 export const TEAM_PAGE = '/team';
 export const ROOM_PAGE = '/room';
 export const ESCAPE_PAGE = '/escape';
+export const ADMIN_PAGE = '/admin';

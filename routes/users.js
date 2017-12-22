@@ -1,19 +1,34 @@
 var express = require('express');
 var router = express.Router();
+var mysql = require('mysql');
+var cors = require('cors');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-	// Comment out this line:
-  //res.send('respond with a resource');
+var app = require('../app.js');
+var conf = require('../mysql/conf.js');
 
-  // And insert something like this instead:
-  res.json([{
-  	id: 1,
-  	username: "samsepi0l"
-  }, {
-  	id: 2,
-  	username: "D0loresH4ze"
-  }]);
+
+router.use(function(req, res, next){
+  connection = mysql.createPool(conf);
+  next();
 });
+
+router.use(cors());
+
+router.get('/', function(req, res, next) {
+      connection.query('SELECT utilisateur.id, utilisateur.Nom, utilisateur.Prenom  FROM utilisateur', function (errUser,user){
+        if (!errUser){
+          var userJSON = JSON.stringify(user);
+          res.send(userJSON)
+        } else {
+          console.log(errUser);
+        }
+      });
+  connection.on('error', function(err){
+  	throw err;
+  	return;
+  });
+});
+
+
 
 module.exports = router;

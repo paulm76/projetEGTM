@@ -15,6 +15,7 @@ import EscapePage from '../EscapePage';
 import Footer from '../Footer';
 import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
+import AdminPage from '../AdminPage'
 
 import * as mysql from 'mysql';
 
@@ -82,6 +83,10 @@ class App extends Component {
             <Route
               exact path={routes.ESCAPE_PAGE}
               component={EscapePage}
+            />
+            <Route
+              exact path={routes.ADMIN_PAGE}
+              component={AdminPage}
             />
             <Route component={PageNotFound}/>
           </ Switch>
