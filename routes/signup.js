@@ -51,16 +51,21 @@ var rand,mailOptions,host,link;*/
 
 router.post('/',function(req, res) {
   console.log("testpost");
-  var username="erreur username";
-  username=req.body.username;
+  var prenom="erreur prenom";
+  prenom=req.body.prenom;
+  var nom="erreur nom";
+  nom=req.body.nom;
   var email="erreur email";
   email=req.body.email;
   var password="erreur password";
-  console.log(username);
+  console.log(prenom);
+  console.log(nom);
   console.log(email);
+  //hash things are done client side
   password=req.body.password;
   console.log(password);
-  var hashedPassword="nothashedyet";
+
+  //var hashedPassword="nothashedyet";
   /*hashedPassword=cryptPassword(password,function(err,hash){
 
     //hashedPassword=hash;
@@ -75,8 +80,8 @@ router.post('/',function(req, res) {
   //console.log(res.text());
   //var requete='Insert into joueur_equipe(id_joueur,id_equipe) values(1,1)'
   //console.log(crypto.createHmac('sha256', password).digest('hex'));
-  var requete='Insert into utilisateur(id,Mot_de_passe,Nom,Prenom,Mail) values(';
-  requete+='5,'+
+  var requete='Insert into utilisateur(Mot_de_passe,Nom,Prenom,Mail) values(';
+  requete+=
   password
   +',nomtest,prenomtest,'+email+')';
   console.log(requete);

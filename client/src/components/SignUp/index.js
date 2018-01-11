@@ -3,14 +3,16 @@ import {  Link,  withRouter } from 'react-router-dom';
 import { Input, Button} from 'semantic-ui-react';
 import crypto from 'crypto'
 import Form from '../Form';
+//import validator from 'validator';
+import * as EmailValidator from 'email-validator';
 import ReactPasswordStrength from 'react-password-strength';
-//import { auth, db } from '../../firebase';
 import * as routes from '../../constants/routes';
 
 
 
 const INITIAL_STATE = {
-  username: '',
+  prenom: '',
+  nom:'',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -26,8 +28,10 @@ class SignUpForm extends Component {
 
   onSubmit = (event) => {
     console.log("submit")
+
     const {
-      username,
+      prenom,
+      nom,
       email,
       passwordOne,
     } = this.state;
@@ -44,7 +48,7 @@ class SignUpForm extends Component {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'username='+username+'&email='+email+'&password='+hash
+      body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash
     })
   //.then(json)
     .then(function (data) {
@@ -58,40 +62,53 @@ class SignUpForm extends Component {
   }
 
 
-  clear = () => this.ReactPasswordStrength.clear()
+  clear = () => this.ReactPasswordStrength.clear();
+
 
   render() {
     const {
-      username,
+      prenom,
+      nom,
       email,
       passwordOne,
       passwordTwo,
       error,
     } = this.state;
 
+
+
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
-      username === '';
+      prenom === ''||
+      nom === ''||
+      !(EmailValidator.validate(email));
+
+
 
     return (
       <Form onSubmit={this.onSubmit} id='signupform'>
         <Input
-          value={username}
-          onChange={event => this.setState({ username: event.target.value })}
+          value={prenom}
+          onChange={event => this.setState({ prenom: event.target.value })}
           type="text"
           placeholder="Prénom"
         />
         <Input
+          value={nom}
+          onChange={event => this.setState({ nom: event.target.value })}
+          type="text"
+          placeholder="Nom"
+        />
+        <Input
           value={email}
           onChange={event => this.setState({ email: event.target.value })}
+
           type="text"
           placeholder="Addresse Email"
         />
 
         <ReactPasswordStrength
-
-
           minLength={8}
           minScore={2}
           tooShortWord='8 caractères minimum'
@@ -102,9 +119,6 @@ class SignUpForm extends Component {
         />
 
         <ReactPasswordStrength
-
-
-
           minLength={8}
           minScore={2}
           tooShortWord='8 caractères minimum'
@@ -112,10 +126,9 @@ class SignUpForm extends Component {
           changeCallback={event =>
     this.setState({ passwordTwo: event.password })}
           inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe" }}
-
         />
 
-        <Button onClick={this.clear} disabled={isInvalid} type="submit">
+        <Button disabled={isInvalid} type="submit">
           Envoyer
         </Button>
         { error && <p>{error.message}</p> }
