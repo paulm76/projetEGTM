@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {  Link,  withRouter } from 'react-router-dom';
 import { Input, Button} from 'semantic-ui-react';
-
+import crypto from 'crypto'
 import Form from '../Form';
+import ReactPasswordStrength from 'react-password-strength';
 //import { auth, db } from '../../firebase';
 import * as routes from '../../constants/routes';
 
@@ -24,6 +25,7 @@ class SignUpForm extends Component {
   }
 
   onSubmit = (event) => {
+    console.log("submit")
     const {
       username,
       email,
@@ -33,26 +35,30 @@ class SignUpForm extends Component {
     const {
       history,
     } = this.props;
+    const hash=crypto.createHmac('sha256',passwordOne).digest('hex');
+    var url="http://localhost:3001/signup";
 
-var url="http://localhost:3001/signup";
-return fetch(url, {
-    method: 'post',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-    },
-    mode: 'cors',
-    body: 'username='+username+'&email='+email+'&password='+passwordOne
-  })
+    return fetch(url, {
+      method: 'post',
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      mode: 'cors',
+      body: 'username='+username+'&email='+email+'&password='+hash
+    })
   //.then(json)
-  .then(function (data) {
-    console.log(data.json());
-    console.log('Request succeeded with JSON response', data);
-  })
-  .catch(function (error) {
-    console.log('Request failed', error);
-  });
-    event.preventDefault();
+    .then(function (data) {
+      console.log(data.json());
+      console.log('Request succeeded with JSON response', data);
+    })
+    .catch(function (error) {
+      console.log('Request failed', error);
+    });
+      event.preventDefault();
   }
+
+
+  clear = () => this.ReactPasswordStrength.clear()
 
   render() {
     const {
@@ -82,22 +88,36 @@ return fetch(url, {
           type="text"
           placeholder="Addresse Email"
         />
-        <Input
-          value={passwordOne}
-          onChange={event => this.setState({ passwordOne: event.target.value })}
-          type="password"
-          placeholder="Mot de passe"
-        />
-        <Input
-          value={passwordTwo}
-          onChange={event => this.setState({ passwordTwo: event.target.value })}
-          type="password"
-          placeholder="Confirmer le Mot de passe"
-        />
-        <Button disabled={isInvalid} type="submit">
-          Se connecter
-        </Button>
 
+        <ReactPasswordStrength
+
+
+          minLength={8}
+          minScore={2}
+          tooShortWord='8 caractères minimum'
+          scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
+          changeCallback={event =>
+          this.setState({ passwordOne: event.password })}
+          inputProps={{  autoComplete: "off",placeholder:"Mot de passe"}}
+        />
+
+        <ReactPasswordStrength
+
+
+
+          minLength={8}
+          minScore={2}
+          tooShortWord='8 caractères minimum'
+          scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
+          changeCallback={event =>
+    this.setState({ passwordTwo: event.password })}
+          inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe" }}
+
+        />
+
+        <Button onClick={this.clear} disabled={isInvalid} type="submit">
+          Envoyer
+        </Button>
         { error && <p>{error.message}</p> }
       </Form>
     );

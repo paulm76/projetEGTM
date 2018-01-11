@@ -61,17 +61,32 @@ router.post('/',function(req, res) {
   password=req.body.password;
   console.log(password);
   var hashedPassword="nothashedyet";
-  cryptPassword(password,function(err,hash){
+  /*hashedPassword=cryptPassword(password,function(err,hash){
 
-    hashedPassword=hash;
-    console.log("err:"+err);
-    console.log("hash:"+hashedPassword);
-  });
+    //hashedPassword=hash;
+    //console.log("err:"+err);
+    //console.log("hash:"+hashedPassword);
+    return hash
+  });*/
 
 /////query
+// attente nouvelle base de donnée avec les informations obligatoires et les non obligatoires
+//nouvelle info obligatoire pays et nationalité pour mangopay, nom prenom et pas username mail et mot de passe
   //console.log(res.text());
-  //connection.query('Insert into joueur_equipe(id_joueur,id_equipe) values (1,1)');//insert
-
+  //var requete='Insert into joueur_equipe(id_joueur,id_equipe) values(1,1)'
+  //console.log(crypto.createHmac('sha256', password).digest('hex'));
+  var requete='Insert into utilisateur(id,Mot_de_passe,Nom,Prenom,Mail) values(';
+  requete+='5,'+
+  password
+  +',nomtest,prenomtest,'+email+')';
+  console.log(requete);
+  connection.query(requete);//insert
+/*
+var requete='Insert into utilisateur(id,Mot_de_passe,Nom,Prenom,Mail,Numero,Adresse,Code_postal,Ville,Date_inscription,Date_derniere_connexion,Date_naissance,Actif) values('
+requete+='"5","'+hashedPassword+'","nomtest","prenomtest",""'+email+'","1","adressetest","11111","villetest","2018-01-08 00:00:00","2018-01-08 00:00:00","1992-01-04","0")'
+console.log(requete);
+connection.query(requete);
+*/
   /////mail
   //rand=Math.floor((Math.random() * 100) + 54);
   //host=req.get('host');
@@ -93,8 +108,8 @@ router.post('/',function(req, res) {
           console.log("Message sent: " + response.message);
       res.end("sent");
    }
- });
-});*/
+ });*/
+});
 //do something with router
 
 module.exports = router;
