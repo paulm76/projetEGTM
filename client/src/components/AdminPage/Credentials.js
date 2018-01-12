@@ -25,7 +25,6 @@ export default class Credentials extends React.Component {
     } = this.state;
     const hash = crypto.createHmac('sha256', `${email}:${password}`).digest('hex');
     if (hash==='3abca5bbd15789ecccdcdf0f7ba1747e8b53a893ab0f9620efd82db753e642c2'){
-      console.log('oui')
       this.setState({ logged:true })
       this.props.OnLoginValided();
     }
@@ -50,16 +49,16 @@ export default class Credentials extends React.Component {
           value={email}
           onChange={event => this.setState({ email: event.target.value })}
           type="text"
-          placeholder="Email Address"
+          placeholder="Addresse mail"
         />
         <Input
           value={password}
           onChange={event => this.setState({ password: event.target.value })}
           type="password"
-          placeholder="Password"
+          placeholder="Mot de passe"
         />
         <Button disabled={isInvalid} type="submit">
-          Sign In
+          Se connecter
         </Button>
         { error && <p>{error.message}</p> }
       </Form>

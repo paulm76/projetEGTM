@@ -6,7 +6,7 @@ var nodemailer = require("nodemailer");
 
 ///hash and salt
 var cryptPassword = function(password, callback) {
-   bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.genSalt(10, function(err, salt) {
     if (err)
       return callback(err);
 
@@ -67,7 +67,7 @@ router.post('/',function(req, res) {
     console.log("err:"+err);
     console.log("hash:"+hashedPassword);
   });
-
+});
 /////query
   //console.log(res.text());
   //connection.query('Insert into joueur_equipe(id_joueur,id_equipe) values (1,1)');//insert
