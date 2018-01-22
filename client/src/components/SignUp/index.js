@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   country: '',
   error: null,
   mailindatabase:false,
+  step:1,
 };
 
 /*------------------Class ------------------------*/
@@ -81,7 +82,9 @@ class SignUpForm extends Component {
       mode: 'cors',
       body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash+'&country='+country+'&nationality='+nationality
     })
+    this.setState({step:2});
   };
+
 
 
   clear = () => this.ReactPasswordStrength.clear();
@@ -104,7 +107,8 @@ class SignUpForm extends Component {
       error,
       country,
       nationality,
-      mailindatabase
+      mailindatabase,
+      step
     } = this.state;
 
     const isInvalid =
@@ -117,53 +121,45 @@ class SignUpForm extends Component {
     !(EmailValidator.validate(email))||
     mailindatabase;
     /*------------------Form Render ------------------------*/
-    return (
-      <Form onSubmit={this.onSubmit} id='signupform'>
-      <Input
-      value={prenom}
-      onChange={event => this.setState({ prenom: event.target.value })}
-      type="text"
-      placeholder="Prénom"
-      />
-      <Input
-      value={nom}
-      onChange={event => this.setState({ nom: event.target.value })}
-      type="text"
-      placeholder="Nom"
-      />
-      <Input
-      value={email}
-      onChange={event =>{
-        this.setState({ email: event.target.value });
-        this.setState({mailindatabase:this.isMailInDatabase(event.target.value)});
-      }}
-      type="text"
-      placeholder="Addresse Email"
-      />
-      <CountryDropdown
-      classes="input "
-      name=""
-      defaultOptionLabel="Choisir la nationalité"
-      value={nationality}
-      valueType="short"
-      onChange={(val) => this.selectNationality(val)} />
-
-      <CountryDropdown
-      name=""
-      defaultOptionLabel="Choisir le pays de résidence"
-      value={country}
-      valueType="short"
-      onChange={(val) => this.selectCountry(val)} />
-
-      <ReactPasswordStrength
-      minLength={8}
-      minScore={2}
-      tooShortWord='8 caractères minimum'
-      scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
-      changeCallback={event =>
-        this.setState({ passwordOne: event.password })}
-        inputProps={{  autoComplete: "off",placeholder:"Mot de passe"}}
+    if(step==1)
+    {
+      return (
+        <Form onSubmit={this.onSubmit} id='signupform'>
+        <Input
+        value={prenom}
+        onChange={event => this.setState({ prenom: event.target.value })}
+        type="text"
+        placeholder="Prénom"
         />
+        <Input
+        value={nom}
+        onChange={event => this.setState({ nom: event.target.value })}
+        type="text"
+        placeholder="Nom"
+        />
+        <Input
+        value={email}
+        onChange={event =>{
+          this.setState({ email: event.target.value });
+          this.setState({mailindatabase:this.isMailInDatabase(event.target.value)});
+        }}
+        type="text"
+        placeholder="Addresse Email"
+        />
+        <CountryDropdown
+        classes="input "
+        name=""
+        defaultOptionLabel="Choisir la nationalité"
+        value={nationality}
+        valueType="short"
+        onChange={(val) => this.selectNationality(val)} />
+
+        <CountryDropdown
+        name=""
+        defaultOptionLabel="Choisir le pays de résidence"
+        value={country}
+        valueType="short"
+        onChange={(val) => this.selectCountry(val)} />
 
         <ReactPasswordStrength
         minLength={8}
@@ -171,27 +167,43 @@ class SignUpForm extends Component {
         tooShortWord='8 caractères minimum'
         scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
         changeCallback={event =>
-          this.setState({ passwordTwo: event.password })}
-          inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe"}}
+          this.setState({ passwordOne: event.password })}
+          inputProps={{  autoComplete: "off",placeholder:"Mot de passe"}}
           />
-          {mailindatabase && <Message negative>Cet email est déja utilisé</Message>}
-          {passwordOne !== passwordTwo && <Message negative>Les mots de passe doivent être identique</Message>}
-          <Button disabled={isInvalid} type="submit">
-          Envoyer
-          </Button>
-          { error && <p>{error.message}</p> }
-          </Form>
-        );
+
+          <ReactPasswordStrength
+          minLength={8}
+          minScore={2}
+          tooShortWord='8 caractères minimum'
+          scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
+          changeCallback={event =>
+            this.setState({ passwordTwo: event.password })}
+            inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe"}}
+            />
+            {mailindatabase && <Message negative>Cet email est déja utilisé</Message>}
+            {passwordOne !== passwordTwo && <Message negative>Les mots de passe doivent être identique</Message>}
+            <Button disabled={isInvalid} type="submit">
+            Envoyer
+            </Button>
+            { error && <p>{error.message}</p> }
+            </Form>
+          );
+
+        }
+        else{
+          return (
+            <Message>Félicitations, vous avez bien été enregistré!</Message>
+          )
+        }
+
       }
     }
-
     const SignUpLink = () =>
     <p>
-    Don't have an account?
+    Nouvel utilisateur?
     {' '}
-    <Link to="/signup">Sign Up</Link>
+    <Link to="/signup">{"S'inscrire"}</Link>
     </p>
-
     export default withRouter(SignUpForm);
 
     export {
