@@ -28,14 +28,14 @@ router.get('/isMailInDatabase',function(req,res,next)
   console.log(requete);
   connection.query(requete,function(err,result){
     if(err) throw err;
-    console.log(result.length);
+
     if(result.length==0)
     {
       res.send(false);
     }
     else {
       res.send(true);
-      console.log("else");
+
     }
   });
 });
@@ -57,7 +57,7 @@ router.post('/',function(req, res,next) {
   requete+='"'+
   password
   +'","'+nom+'","'+prenom+'","'+email+'","'+country+'","'+nationality+'")';
-  console.log(requete);
+
   query(connection,requete)
   .then(function()
   {
