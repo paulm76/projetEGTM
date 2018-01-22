@@ -13,7 +13,7 @@ var room = require('./routes/room');
 var escape = require('./routes/escape');
 var signup = require('./routes/signup');
 var filter = require('./routes/filter');
-
+var validTeam = require('./routes/validTeam');
 
 var mangopay = require('./routes/mangopay');
 
@@ -39,7 +39,7 @@ app.use('/room', room);
 app.use('/escape', escape);
 app.use('/signup',signup);
 app.use('/filter', filter);
-
+app.use('/validTeam', validTeam);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

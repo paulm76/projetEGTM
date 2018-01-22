@@ -17,8 +17,6 @@ import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
 import AdminPage from '../AdminPage'
 
-import * as mysql from 'mysql';
-
 
 import './index.css';
 
