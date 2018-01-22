@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {  Link,  withRouter } from 'react-router-dom';
-import { Input, Button} from 'semantic-ui-react';
+import { Input, Button,Message} from 'semantic-ui-react';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import crypto from 'crypto'
 import Form from '../Form';
+
 //import validator from 'validator';
 import * as EmailValidator from 'email-validator';
 import ReactPasswordStrength from 'react-password-strength';
 import * as routes from '../../constants/routes';
+import styles from './style.css';
 
 
 
@@ -16,14 +19,43 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  nationality: '',
+  country: '',
   error: null,
+  mailindatabase:false,
 };
+
+
+
 
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
+  }
+
+  isMailInDatabase=(email)=>
+  {
+    //true if in database
+    if(EmailValidator.validate(email))
+    {
+      console.log("email="+email);
+      var url="http://localhost:3001/signup/isMailInDatabase?email="+email;
+      fetch(url, {
+        method: 'GET',
+        mode: 'cors'
+      }).then(blob=>blob.json())
+      .then((data)=>{
+        console.log("response from server="+data);
+        this.setState({mailindatabase:data});
+        return data;
+      })
+    }
+    else {
+      console.log("invalid email");
+      return false;
+    }
   }
 
   onSubmit = (event) => {
@@ -34,7 +66,10 @@ class SignUpForm extends Component {
       nom,
       email,
       passwordOne,
+      nationality,
+      country,
     } = this.state;
+
 
     const {
       history,
@@ -42,111 +77,161 @@ class SignUpForm extends Component {
     const hash=crypto.createHmac('sha256',passwordOne).digest('hex');
     var url="http://localhost:3001/signup";
 
-    return fetch(url, {
+    fetch(url, {
       method: 'post',
       headers: {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash
+      body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash+'&country='+country+'&nationality='+nationality
     })
-  //.then(json)
-    .then(function (data) {
-      console.log(data.json());
-      console.log('Request succeeded with JSON response', data);
-    })
-    .catch(function (error) {
-      console.log('Request failed', error);
-    });
-      event.preventDefault();
+    //.then(json)
+    /*.then(function(response) {
+    if (response.status >= 400) {
+    throw new Error("Bad response from server");
   }
+  return response.json();
+})
+.then(function(data) {
+console.log(data)
+if(data == "success"){
+console.log("sucess")
+//this.setState({msg: "Thanks for registering"});
+}
+})*/
+.then(function(){
+  console.log("after fetch do")
+})
+.catch(function(err) {
+  window.alert(err)
+})
+
+};
 
 
-  clear = () => this.ReactPasswordStrength.clear();
-
-
-  render() {
-    const {
-      prenom,
-      nom,
-      email,
-      passwordOne,
-      passwordTwo,
-      error,
-    } = this.state;
-
-
-
-    const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      prenom === ''||
-      nom === ''||
-      !(EmailValidator.validate(email));
-
-
-
-    return (
-      <Form onSubmit={this.onSubmit} id='signupform'>
-        <Input
-          value={prenom}
-          onChange={event => this.setState({ prenom: event.target.value })}
-          type="text"
-          placeholder="Prénom"
-        />
-        <Input
-          value={nom}
-          onChange={event => this.setState({ nom: event.target.value })}
-          type="text"
-          placeholder="Nom"
-        />
-        <Input
-          value={email}
-          onChange={event => this.setState({ email: event.target.value })}
-
-          type="text"
-          placeholder="Addresse Email"
-        />
-
-        <ReactPasswordStrength
-          minLength={8}
-          minScore={2}
-          tooShortWord='8 caractères minimum'
-          scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
-          changeCallback={event =>
-          this.setState({ passwordOne: event.password })}
-          inputProps={{  autoComplete: "off",placeholder:"Mot de passe"}}
-        />
-
-        <ReactPasswordStrength
-          minLength={8}
-          minScore={2}
-          tooShortWord='8 caractères minimum'
-          scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
-          changeCallback={event =>
-    this.setState({ passwordTwo: event.password })}
-          inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe" }}
-        />
-
-        <Button disabled={isInvalid} type="submit">
-          Envoyer
-        </Button>
-        { error && <p>{error.message}</p> }
-      </Form>
-    );
-  }
+clear = () => this.ReactPasswordStrength.clear();
+selectCountry (val) {
+  this.setState({ country: val });
+  //console.log(val);
+}
+selectNationality (val) {
+  this.setState({ nationality: val });
+  //console.log(val);
 }
 
-const SignUpLink = () =>
+
+
+
+render() {
+  const {
+    prenom,
+    nom,
+    email,
+    passwordOne,
+    passwordTwo,
+    error,
+    country,
+    nationality,
+    mailindatabase
+  } = this.state;
+
+
+
+  //mailInDatabase=isMailInDatabase(email);
+  //console.log("mailindatabase="+mailInDatabase);
+
+  const isInvalid =
+  passwordOne !== passwordTwo ||
+  passwordOne === '' ||
+  prenom === ''||
+  nom === ''||
+  nationality===''||
+  country===''||
+  !(EmailValidator.validate(email))||
+  mailindatabase;
+
+
+
+
+  return (
+    <Form onSubmit={this.onSubmit} id='signupform'>
+    <Input
+    value={prenom}
+    onChange={event => this.setState({ prenom: event.target.value })}
+    type="text"
+    placeholder="Prénom"
+    />
+    <Input
+    value={nom}
+    onChange={event => this.setState({ nom: event.target.value })}
+    type="text"
+    placeholder="Nom"
+    />
+    <Input
+    value={email}
+    onChange={event =>{
+      this.setState({ email: event.target.value });
+      this.setState({mailindatabase:this.isMailInDatabase(event.target.value)});
+    }}
+
+    type="text"
+    placeholder="Addresse Email"
+    />
+    <CountryDropdown
+    classes="input "
+    name=""
+    defaultOptionLabel="Choisir la nationalité"
+    value={nationality}
+    valueType="short"
+    onChange={(val) => this.selectNationality(val)} />
+
+    <CountryDropdown
+    name=""
+    defaultOptionLabel="Choisir le pays de résidence"
+    value={country}
+    valueType="short"
+    onChange={(val) => this.selectCountry(val)} />
+
+    <ReactPasswordStrength
+    minLength={8}
+    minScore={2}
+    tooShortWord='8 caractères minimum'
+    scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
+    changeCallback={event =>
+      this.setState({ passwordOne: event.password })}
+      inputProps={{  autoComplete: "off",placeholder:"Mot de passe"}}
+      />
+
+      <ReactPasswordStrength
+      minLength={8}
+      minScore={2}
+      tooShortWord='8 caractères minimum'
+      scoreWords={['faible', 'moyen', 'bon', 'élevé', 'très élevé']}
+      changeCallback={event =>
+        this.setState({ passwordTwo: event.password })}
+        inputProps={{  autoComplete: "off",placeholder:"Confirmer le mot de passe"}}
+        />
+        {mailindatabase && <Message negative>Cet email est déja utilisé</Message>}
+        {passwordOne !== passwordTwo && <Message negative>Les mots de passe doivent être identique</Message>}
+        <Button disabled={isInvalid} type="submit">
+        Envoyer
+        </Button>
+        { error && <p>{error.message}</p> }
+        </Form>
+      );
+    }
+  }
+
+  const SignUpLink = () =>
   <p>
-    Don't have an account?
-    {' '}
-    <Link to="/signup">Sign Up</Link>
+  Don't have an account?
+  {' '}
+  <Link to="/signup">Sign Up</Link>
   </p>
 
-export default withRouter(SignUpForm);
+  export default withRouter(SignUpForm);
 
-export {
-  SignUpForm,
-  SignUpLink,
-};
+  export {
+    SignUpForm,
+    SignUpLink,
+  };
