@@ -15,13 +15,13 @@ router.use(function(req, res, next){
 router.use(cors());
 
 router.get('/', function(req, res, next) {
-  connection.query('SELECT equipe.id, equipe.Nb_joueur, equipe.Date, equipe.Room, room.Photo, room.Nb_places_max FROM equipe INNER JOIN room ON equipe.Room=room.Nom ORDER BY equipe.Date;', function(errTeam, teams){
-	if (!errTeam){
-	  var teamsJSON = JSON.stringify(teams);
+  connection.query('SELECT equipe.id, equipe.Nb_joueurs, equipe.Date, equipe.Room, room.Etablissement, room.Nb_places_max FROM equipe INNER JOIN room ON equipe.Room=room.Nom INNER JOIN escape ON room.Etablissement=escape.Nom WHERE equipe.Active=1 ORDER BY equipe.Date;', function(errTeam, teams){
+  	if (!errTeam){
+  	  var teamsJSON = JSON.stringify(teams);
   	  res.send(teamsJSON);
-	} else {
-	  console.log(errTeam);
-	}
+  	} else {
+  	  console.log(errTeam);
+  	}
   });
   connection.on('error', function(err){
   	throw err;

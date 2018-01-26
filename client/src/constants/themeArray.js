@@ -1,5 +1,4 @@
 const themeArray = [
-	{ key: 'noTheme', value: 'noTheme', text: 'Indifférent'},
 	{ key: 'asile', value: 'asile', text: 'Asile'},
 	{ key: 'banque', value: 'banque', text: 'Banque'},
 	{ key: 'bombe', value: 'bombe', text: 'Bombe'},

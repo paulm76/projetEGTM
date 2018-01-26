@@ -26,6 +26,7 @@ class RoomPage extends React.Component {
   componentWillMount() {
     var query = this.props.location.search
   	var room = query.substring(6, query.length);
+    console.log(room);
 	  var headers = new Headers();
 	  var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
 	  fetch('http://localhost:3001/room?room=' + room, init).then(res => res.json()).then(roomInfo => this.setState({ roomInfo: roomInfo, }));
@@ -33,27 +34,33 @@ class RoomPage extends React.Component {
 
   render() {
     const { contextRef } = this.state.contextRef;
+console.log(this.state.roomInfo);
    	if (this.state.roomInfo && this.state.roomInfo!="" && this.state.roomInfo!="null"){
-
+console.log(this.state.roomInfo);
 	    var room = JSON.parse(this.state.roomInfo[0]);
 	    var escape = JSON.parse(this.state.roomInfo[1]);
 	    var teams = JSON.parse(this.state.roomInfo[2]);
 
-      var escapeName = escape[0].Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
+      var escapeNameUnderscore = escape[0].Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
+      var escapeName = escape[0].Nom.replace(' ','').replace(' ','').replace(' ','').replace(' ','');
+      var roomName = room[0].Nom.replace(' ','').replace(' ','').replace(' ','').replace(' ','');
+      var imagePath = "public/images/"+escapeName.toLowerCase()+"/"+roomName.toLowerCase()+".png";
+      imagePath = imagePath.replace('é','e');
 
 	    return (
 	      <div >
 	      	<Grid centered columns={2} stackable>
         	  <Grid.Column computer='8'>
           		<Segment vertical>
-            	  <h1>{room[0].Nom}</h1> <Link to={`/escape?escape=${escapeName}`}><h3>{escape[0].Nom}</h3></Link>
+            	  <h1>{room[0].Nom}</h1> <Link to={`/escape?escape=${escapeNameUnderscore}`}><h3>{escape[0].Nom}</h3></Link>
             	  <Icon name='marker' />{escape[0].Adresse}, {escape[0].Code_postal} {escape[0].Ville}
           		</Segment>
 
           		<Segment vertical>
             	  <Grid centered columns={2}>
               		<Grid.Column>
-                	  <span><Icon name='hashtag' /> <Label>{room[0].Theme} </Label></span>
+                	  <span><Icon name='hashtag' /> <Label>{room[0].Theme} </Label></span> <br/>
+                    <span><Icon name='users' /> De {room[0].Nb_places_min} à {room[0].Nb_places_max} joueurs</span>
               		</Grid.Column>
               		<Grid.Column>
                 	  <span><Icon name='chain' /> Difficulté : {room[0].Difficulte} </span><br/>
@@ -82,7 +89,7 @@ class RoomPage extends React.Component {
           		<div ref={this.handleContextRef}>
             	  <Sticky context={contextRef} >
             		<Card fluid>
-              		  <Image src={room[0].Photo}/>
+              		  <Image src={imagePath}/>
               		  <Button color='blue'attached='bottom'> Reserver </Button>
             		</Card>
             	  </Sticky>

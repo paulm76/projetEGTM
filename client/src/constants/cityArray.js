@@ -1,5 +1,5 @@
 const cityArray = [
-	{ key: 'noCity', value: 'noCity', text: 'Indifférent'},
+	{ key: 'null', value: '', text: ''},
 	{ key: 'paris', value: 'paris', text: 'Paris'}
 ];
 

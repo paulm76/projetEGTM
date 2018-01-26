@@ -10,6 +10,7 @@ import 'react-select/dist/react-select.css';
 import findPrice from '../../scripts/findPrice.js';
 import TeamMembers from '../TeamMembers';
 import formatedDate from '../../scripts/formatedDate.js';
+import formatePictureName from '../../scripts/formatePictureName.js';
 
 class TeamPage extends Component {
   constructor(props) {
@@ -53,22 +54,25 @@ class TeamPage extends Component {
 	        admin = users[i];
 	      }
 	    }
+
+	    room[0].Photo = formatePictureName(room[0].Etablissement, room[0].Nom);
+
 	    var prices = findPrice(team[0].Date, room[0].Tarif_creux, room[0].Tarif_plein, room[0].Creuses_pleines, room[0].Dates_speciales);
 	    prices = prices.split(',');
 	    var places = []
-	    for (var i=0; i<room[0].Nb_places_max - team[0].Nb_joueur; i++){
+	    for (var i=0; i<room[0].Nb_places_max - team[0].Nb_joueurs; i++){
 	      places.push({value: i, label: i + 1});
 	    }
 
 	    var realPrice; 
 	    if (this.state.price == 0){
-	    	realPrice = prices[usersLen - room[0].Nb_places_min + 1]; //a revoir
+	    	realPrice = prices[usersLen - room[0].Nb_places_min + 1];
 	    } else {
 	    	realPrice = this.state.price;
 	    }
 
-	    var linkToRoom = '/room?room=' + room[0].Nom.replace(" ","_");
-	    var linkToEscape = '/escape?escape=' + room[0].Escape_game.replace(" ","_").replace(" ","_").replace(" ","_").replace(" ","_");
+	    var linkToRoom = '/room?room=' + room[0].Nom.replace(" ","_").replace(" ","_").replace(" ","_").replace(" ","_").replace(" ","_");
+	    var linkToEscape = '/escape?escape=' + room[0].Etablissement.replace(" ","_").replace(" ","_").replace(" ","_").replace(" ","_");
 
 	    return (
 	      <div >
@@ -76,8 +80,8 @@ class TeamPage extends Component {
 	          <Grid.Column computer='8'>
 	            <Segment vertical>
 	              <h1>{team[0].Titre}</h1>
-	              <h1><Link to={linkToRoom}>{room[0].Nom}</Link> </h1>
-	              <h3><Link to={linkToEscape}>{room[0].Escape_game}</Link></h3>
+	              <h1><Link to={linkToRoom}>{room[0].Nom}</Link></h1>
+	              <h3><Link to={linkToEscape}>{room[0].Etablissement}</Link></h3>
 	              <Icon name='marker' />{room[0].Adresse}, {room[0].Code_postal} {room[0].Ville} <br />
 	              <Icon name='calendar' /> {formatedDate(team[0].Date)}
 	            </Segment>
@@ -86,7 +90,7 @@ class TeamPage extends Component {
 	              <Grid centered columns={2}>
 	                <Grid.Column>
 	                  <span>Créée par {admin.Prenom}  {admin.Nom.substring(0,1)}. </span><br/>
-	                  <span><Icon name='users' /> {team[0].Nb_joueur}/{room[0].Nb_places_max} membres </span><br/>
+	                  <span><Icon name='users' /> {team[0].Nb_joueurs}/{room[0].Nb_places_max} membres </span><br/>
 	                  <span><Icon name='hashtag' /> <Label>{room[0].Theme} </Label></span>
 	                </Grid.Column>
 	                <Grid.Column>
@@ -107,7 +111,7 @@ class TeamPage extends Component {
 	            </Segment>
 
 	            <h2>Membres </h2>
-	            <TeamMembers members={users} text ratio={1} idadmin={team[0].id_admin} libres={room[0].Nb_places_max-team[0].Nb_joueur} />
+	            <TeamMembers members={users} text ratio={1} idadmin={team[0].id_admin} libres={room[0].Nb_places_max-team[0].Nb_joueurs} />
 	            <h2>Localisation </h2>
 	            <GoogleMapMarker
 	              isMarkerShown
