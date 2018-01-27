@@ -12,6 +12,7 @@ var team = require('./routes/team');
 var room = require('./routes/room');
 var escape = require('./routes/escape');
 var signup = require('./routes/signup');
+var signin = require('./routes/signin');
 var filter = require('./routes/filter');
 var validTeam = require('./routes/validTeam');
 
@@ -38,6 +39,7 @@ app.use('/mangopay', mangopay);
 app.use('/room', room);
 app.use('/escape', escape);
 app.use('/signup',signup);
+app.use('/signin',signin);
 app.use('/filter', filter);
 app.use('/validTeam', validTeam);
 
