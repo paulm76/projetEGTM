@@ -18,7 +18,7 @@ Navigation.contextTypes = {
 const NavigationAuth = () =>
   <Menu secondary>
     <Menu.Item>
-      <Link to={routes.FRONTPAGE}>EGTM</Link>
+      <Link to={routes.FRONTPAGE}><img src="public/images/logoEscapeTeamUPblanc.png" style={{ height: '60px', width: 'auto', marginRight: '10px' }}/>Escape Team UP</Link>
     </Menu.Item>
     <Menu.Item position="right">
       <Link to={routes.ESCPAPEGAME}>Les escape games</Link>
@@ -40,7 +40,7 @@ const NavigationAuth = () =>
 const NavigationNonAuth = () =>
   <Menu secondary>
     <Menu.Item>
-      <Link to={routes.FRONTPAGE}>EGTM</Link>
+      <Link to={routes.FRONTPAGE}><img src="public/images/logoEscapeTeamUPblanc.png" style={{ height: '60px', width: 'auto', marginRight: '10px' }}/>Escape Team UP</Link>
     </Menu.Item>
     <Menu.Item position="right">
       <Link to={routes.ESCPAPEGAME}>Les escape games</Link>

@@ -3,6 +3,7 @@ import { Button } from 'semantic-ui-react';
 import * as routes from '../../constants/routes';
 import ValidTeam from '../ValidTeam';
 import UserList from '../AdminPage/UserList.js';
+import UserList from '../UserList';
 
 export default class AdminPanel extends Component {
 
@@ -38,10 +39,24 @@ export default class AdminPanel extends Component {
         <div>
           <div style={{ display: 'flex' }}>
             <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
             <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
           </div>
           <div>
             <ValidTeam />
+          </div>
+        </div>
+      );
+    } else if (this.state.onglet === 'CurrentTeam'){
+      return(
+        <div>
+          <div style={{ display: 'flex' }}>
+            <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
+          </div>
+          <div>
+            <CurrentTeam />
           </div>
         </div>
       );
@@ -50,6 +65,7 @@ export default class AdminPanel extends Component {
         <div>
           <div style={{ display: 'flex' }}>
             <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
             <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
           </div>
           <div>

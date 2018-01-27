@@ -24,11 +24,8 @@ class Filter extends Component {
     super(props);
 
     this.state = {
-	  escapeGame: '',
-	  room: '',
-	  prix: 0,
+	  teams: [],
 	  city: '',
-	  priceMin: 0,
 	  priceMax: 0,
 	  playerNb: 0,
 	  hourMin: 0,
@@ -41,73 +38,137 @@ class Filter extends Component {
 
     this.submitFilters = this.submitFilters.bind(this);
     this.onSelectCity = this.onSelectCity.bind(this);
+    this.onSelectDate = this.onSelectDate.bind(this);
+    this.onSelectPlace = this.onSelectPlace.bind(this);
+    this.onSelectTheme = this.onSelectTheme.bind(this);
+    this.onSelectDifficulty = this.onSelectDifficulty.bind(this);
+    this.onSelectMaxPrice = this.onSelectMaxPrice.bind(this);
+    this.onSelectMinHour = this.onSelectMinHour.bind(this);
+    this.onSelectMaxHour = this.onSelectMaxHour.bind(this);
+    this.onTeamInfoUpdate = this.onTeamInfoUpdate.bind(this);
   }
 
   submitFilters(){
-	var headers = new Headers();
-	var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
-	fetch('http://localhost:3001/filter?city=' + this.state.city, init).then(res => res.json()).then(teamInfo => this.setState({ teamInfo: teamInfo, }));
+  	if (this.state.teams != []){
+  	  var filteredTeams = [];
+  	  console.log(this.state.teams);
+  	  if (this.state.city != ''){
+
+  	  }
+  	  if (this.state.priceMax != 0){
+
+  	  }
+  	  if (this.state.playerNb != 0){
+
+  	  }
+  	  if (this.state.hourMin != 0){
+
+  	  }
+  	  if (this.state.hourMax != 0){
+
+  	  }
+  	  if (this.state.date != ''){
+
+  	  }
+  	  if (this.state.theme != ''){
+
+  	  }
+  	  if (this.state.difficulty != ''){
+
+  	  }
+  	}
+	this.onTeamInfoUpdate()
   }
 
   onSelectCity(event){
   	this.setState({ city: event.target.textContent });
   }
 
-  componentWillMount() {
-  	console.log(this.state.city);
+  onSelectDate(event){
+  	this.setState({ date: event.target.value });
+  }
+
+  onSelectPlace(event){
+  	this.setState({ playerNb: event.target.value });
+  }
+
+  onSelectTheme(event){
+  	this.setState({ theme: event.target.innerText });
+  }
+
+  onSelectDifficulty(event){
+  	this.setState({ difficulty: event.target.textContent });
+  }
+
+  onSelectMaxPrice(event){
+  	this.setState({ priceMax: event.target.value });
+  }
+
+  onSelectMinHour(event){
+  	this.setState({ hourMin: event.target.value });
+  }
+
+  onSelectMaxHour(event){
+  	this.setState({ hourMax: event.target.value });
+  }
+
+  onTeamInfoUpdate(){
+  	this.props.onFilterUpdate(this.state.teams);
+  }
+
+  componentDidMount() {
+  	
   }
 
   render() {
-		return (
-	      <FilterForm>
-			  <FilterContainer style={{ display: "bloc" }}>
-				<Label for="citySelect">Ville</Label>
-				<Select id="citySelect" onChange={(event) => this.onSelectCity(event)} options={cityArray}/>
-			  </FilterContainer>
+  	console.log(this.state.teams);
+	return (
+      <FilterForm>
+		  <FilterContainer style={{ display: "none" }}>
+			<Label for="citySelect">Ville</Label>
+			<Select id="citySelect" onChange={(event) => this.onSelectCity(event)} options={cityArray}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="dateInput">Date</Label>
-				<Input id="dateInput" type="date" />
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="dateInput">Date</Label>
+			<Input id="dateInput" type="date" onChange={(event) => this.onSelectDate(event)} />
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="playerNbInput">Nombre de place voulues</Label>
-				<Input id="playerNbInput" type="number" min="1" />
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="playerNbInput">Nombre de place voulues</Label>
+			<Input id="playerNbInput" type="number" min="1" onChange={(event) => this.onSelectPlace(event)} />
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="themeSelect">Theme</Label>
-				<Select id="themeSelect" onChange={this.onSelectTheme} options={themeArray}/>
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="themeSelect">Theme</Label>
+			<Select id="themeSelect" onChange={(event) => this.onSelectTheme(event) } options={themeArray}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="difficultySelect">Difficulté</Label>
-				<Select id="difficultySelect" onChange={this.onSelectDifficulty} options={difficultyArray}/>
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="difficultySelect">Difficulté</Label>
+			<Select id="difficultySelect" onChange={(event) => this.onSelectDifficulty(event)} options={difficultyArray}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="priceMinInput">Prix minimum</Label>
-				<Input id="priceMinInput" type="number" min="0" />
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="priceMaxInput">Prix maximum</Label>
+			<Input id="priceMaxInput" type="number" onChange={(event) => this.onSelectMaxPrice(event)}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="priceMaxInput">Prix maximum</Label>
-				<Input id="priceMaxInput" type="number" />
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="hourMinInput">Heure minimum</Label>
+			<Input id="hourMinInput" type="number" onChange={(event) => this.onSelectMinHour(event)}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="hourMinInput">Heure minimum</Label>
-				<Input id="hourMinInput" type="number" />
-			  </FilterContainer>
+		  <FilterContainer>
+			<Label for="hourMaxInput">Heure maximum</Label>
+			<Input id="hourMaxInput" type="number" onChange={(event) => this.onSelectMaxHour(event)}/>
+		  </FilterContainer>
 
-			  <FilterContainer>
-				<Label for="hourMaxInput">Heure maximum</Label>
-				<Input id="hourMaxInput" type="number" />
-			  </FilterContainer>
+		  <FilterContainer>
+		  	<Button onClick={this.submitFilters} content="Filtrer" type="button"/>
+		  </FilterContainer>
 
-			  <Button onclick={this.submitFilters} />
-
-		  </FilterForm>
+	  </FilterForm>
     );
   }
 }

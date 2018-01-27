@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import mysql from 'mysql';
 
 import * as routes from '../../constants/routes';
+import formatePictureName from '../../scripts/formatePictureName.js';
 
 const INITIAL_STATE = {
   team: '',
@@ -25,10 +26,11 @@ class TeamItem extends React.Component {
     var hours = team.Date.substring(11,13);
     var day = team.Date.substring(8,10);
     var month = team.Date.substring(5,7);
-    var itemStyle = { width: '270px', height: '120px', borderTop: 'none', paddingTop: '5px', marginLeft: '20px' }
-    var contentStyle = { backgroundImage: "url('" + team.Photo + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white' };
-    var headerStyle = { color: 'white' }
-    var linkToTeam = '/team?teamId=' + team.id
+    var imagePath = formatePictureName(team.Etablissement, team.Room);
+    var itemStyle = { width: '270px', height: '120px', borderTop: 'none', paddingTop: '5px', marginLeft: '20px' };
+    var contentStyle = { backgroundImage: "url('" + imagePath + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black', paddingLeft: '10px' };
+    var headerStyle = { color: 'white' };
+    var linkToTeam = '/team?teamId=' + team.id;
 
     return(
   <List.Item style={ itemStyle }>
@@ -42,7 +44,7 @@ class TeamItem extends React.Component {
             
         </List.Description>
             <p><br /><strong>
-              &nbsp;&nbsp;&nbsp;&nbsp;{team.Nb_places_max - team.Nb_joueur} places restantes<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;{team.Nb_places_max - team.Nb_joueurs} places restantes<br />
               &nbsp;&nbsp;&nbsp;&nbsp;Le {day}/{month} à {hours}:{minutes}
             </strong></p>
       </List.Content>

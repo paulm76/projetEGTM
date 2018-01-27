@@ -1,5 +1,5 @@
 const difficultyArray = [
-	{ key: 'noDifficulty', value: 'noDifficulty', text: 'Indifférent' },
+	{ key: 'null', value: '', text: ''},
 	{ key: 'easy', value: 'easy', text: 'Facile' },
 	{ key: 'medium', value: 'medium', text: 'Moyen' },
 	{ key: 'dificult', value: 'difficult', text: 'Difficile' },
