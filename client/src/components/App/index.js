@@ -13,16 +13,17 @@ import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
 import EscapePage from '../EscapePage';
 import Footer from '../Footer';
-import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
 import AdminPage from '../AdminPage'
-
-import * as mysql from 'mysql';
-
+import { connect } from 'react-redux';
+import { sessionService } from 'redux-react-session';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import PaymentValid from '../PaymentValid';
+import PayOut from '../PayOut';
 
 import './index.css';
 
-const HN_URL = 'http://hn.algolia.com/api/v1/search';
 
 class App extends Component {
   constructor(props) {
@@ -36,10 +37,11 @@ class App extends Component {
   }
 
   render() {
+
     return (
       <Router>
         <div className="app">
-          <Navigation />
+          <Navigation authenticated={this.props.authenticated} />
 
           <hr/>
           <Switch>
@@ -52,21 +54,24 @@ class App extends Component {
               }
             />
 
-            <Route
+            <PublicRoute
               exact path={routes.SIGN_UP}
               component={SignUpPage}
+              authenticated={this.props.authenticated}
             />
             <Route
               exact path={routes.SIGN_IN}
               component={SignInPage}
+              authenticated={this.props.authenticated}
             />
-            <Route
+            <PublicRoute
               exact path={routes.PASSWORD_FORGET}
               component={PasswordForgetPage}
             />
-            <Route
+            <PrivateRoute
               exact path={routes.ACCOUNT}
               component={AccountPage}
+              authenticated={this.props.authenticated}
             />
             <Route
               exact path={routes.GAIN_SIMULATOR}
@@ -88,6 +93,16 @@ class App extends Component {
               exact path={routes.ADMIN_PAGE}
               component={AdminPage}
             />
+
+            <Route
+              exact path={routes.PAYMENT_DONE}
+              component={PaymentValid}
+            />
+
+            <Route
+              exact path='/payout'
+              component={PayOut}
+            />
             <Route component={PageNotFound}/>
           </ Switch>
 
@@ -98,5 +113,9 @@ class App extends Component {
   }
 }
 
-//export default withAuthentication(App);
-export default App;
+const mapState = ({ session }) => ({
+  checked: session.checked,
+  authenticated: session.authenticated
+});
+
+export default connect(mapState)(App);

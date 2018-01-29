@@ -1,7 +1,6 @@
 
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 
 export default class UserList extends React.Component {

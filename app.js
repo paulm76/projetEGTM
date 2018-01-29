@@ -10,14 +10,11 @@ var users = require('./routes/users');
 var team = require('./routes/team');
 var team = require('./routes/team');
 var room = require('./routes/room');
-<<<<<<< HEAD
-var escape = require('./routes/escape')
-//var signup = require('./routes/signup');
-=======
 var escape = require('./routes/escape');
 var signup = require('./routes/signup');
+var signin = require('./routes/signin');
 var filter = require('./routes/filter');
->>>>>>> 3fc9d8f26e7c8b21f61b028fdb1af5d19f92a5c2
+var validTeam = require('./routes/validTeam');
 
 var mangopay = require('./routes/mangopay');
 
@@ -41,12 +38,10 @@ app.use('/team', team);
 app.use('/mangopay', mangopay);
 app.use('/room', room);
 app.use('/escape', escape);
-<<<<<<< HEAD
-//app.use('/signup',signup);
-=======
 app.use('/signup',signup);
+app.use('/signin',signin);
 app.use('/filter', filter);
->>>>>>> 3fc9d8f26e7c8b21f61b028fdb1af5d19f92a5c2
+app.use('/validTeam', validTeam);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
