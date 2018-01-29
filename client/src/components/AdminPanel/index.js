@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import * as routes from '../../constants/routes';
 import ValidTeam from '../ValidTeam';
+<<<<<<< HEAD
 import UserList from '../UserList';
 import CurrentTeam from '../CurrentTeam';
+=======
+import CurrentTeam from '../CurrentTeam';
+import OldTeam from '../OldTeam';
+import UserList from '../UserList';
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
 
 export default class AdminPanel extends Component {
 
@@ -40,6 +46,10 @@ export default class AdminPanel extends Component {
           <div style={{ display: 'flex' }}>
             <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
             <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
+<<<<<<< HEAD
+=======
+            <h2 style={{ marginTop: '20px' }}><Button id="OldTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes passées</Button></h2>
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
             <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
           </div>
           <div>
@@ -53,6 +63,10 @@ export default class AdminPanel extends Component {
           <div style={{ display: 'flex' }}>
             <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
             <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
+<<<<<<< HEAD
+=======
+            <h2 style={{ marginTop: '20px' }}><Button id="OldTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes passées</Button></h2>
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
             <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
           </div>
           <div>
@@ -60,12 +74,33 @@ export default class AdminPanel extends Component {
           </div>
         </div>
       );
+<<<<<<< HEAD
+=======
+    } else if (this.state.onglet === 'OldTeam'){
+      return(
+        <div>
+          <div style={{ display: 'flex' }}>
+            <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="OldTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes passées</Button></h2>
+            <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
+          </div>
+          <div>
+            <OldTeam />
+          </div>
+        </div>
+      );
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
     } else if (this.state.onglet === 'UserList'){
       return(
         <div>
           <div style={{ display: 'flex' }}>
             <h2 style={{ marginTop: '20px' }}><Button id="ValidTeam" onClick ={ (event) => this.updateOnglet(event) }>Valider les equipes</Button></h2>
             <h2 style={{ marginTop: '20px' }}><Button id="CurrentTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes en cours</Button></h2>
+<<<<<<< HEAD
+=======
+            <h2 style={{ marginTop: '20px' }}><Button id="OldTeam" onClick={ (event) => this.updateOnglet(event) }>Equipes passées</Button></h2>
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
             <h2 style={{ marginTop: '20px' }}><Button id="UserList" onClick={ (event) => this.updateOnglet(event) }>Liste des utilisateurs</Button></h2>
           </div>
           <div>

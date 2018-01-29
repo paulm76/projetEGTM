@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
@@ -21,11 +20,11 @@ export default class UserList extends React.Component {
 
   render() {
     return(
-    <BootstrapTable data={ this.state.data } options={ { noDataText: 'This is custom text for empty data' } }>
+    <BootstrapTable data={ this.state.data } options={ { noDataText: 'Data not found' } }>
       <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true }>ID</TableHeaderColumn>
       <TableHeaderColumn dataField='Nom' dataSort={ true }>Nom</TableHeaderColumn>
       <TableHeaderColumn dataField='Prenom' dataSort={ true }>Prénom</TableHeaderColumn>
-  </BootstrapTable>
+    </BootstrapTable>
 
   );
 

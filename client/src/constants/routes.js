@@ -18,4 +18,7 @@ export const ADMIN_PAGE = '/admin';
 export const ADD_ESCAPE = '/admin/addEscape';
 export const ADD_ROOM = '/admin/addRoom';
 export const VALID_TEAM = '/admin/validTeam';
+<<<<<<< HEAD
 export const PAYMENT_DONE = '/admin/paymentDone';
+=======
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e

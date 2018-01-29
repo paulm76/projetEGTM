@@ -3,6 +3,7 @@
 import React from 'react';
 import Credentials from './Credentials';
 import UserList from './UserList';
+import AdminPanel from '../AdminPanel';
 
 export default class AdminPage extends React.Component {
 
@@ -15,8 +16,8 @@ export default class AdminPage extends React.Component {
   }
 
   handleLogin = () => {
-        this.setState({page:'user'});
-    }
+    this.setState({ page:'administration' });
+  }
 
   componentDidMount() {
   }
@@ -25,10 +26,8 @@ export default class AdminPage extends React.Component {
     const page = this.state.page;
     return (
       <div className="admin-page">
-      {page!=='credentials' && <a onClick={(event)=>this.setState({ page: 'user' })}>Utilisateur</a>}
-        {page==='credentials' &&<Credentials  OnLoginValided={this.handleLogin}/>}
-        {page==='user' && <UserList />}
-
+        {page==='credentials' && <Credentials  OnLoginValided={this.handleLogin}/>}
+        {page==='administration' && <AdminPanel />}
       </div>
     );
   }

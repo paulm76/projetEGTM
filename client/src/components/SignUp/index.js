@@ -31,7 +31,11 @@ class SignUpForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
+<<<<<<< HEAD
   isMailInDatabase=(email)=>
+=======
+  isMailInDatabase = (email) =>
+>>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
   {
     //function to be sure that no user can have the same mail than another
     //true if in database
