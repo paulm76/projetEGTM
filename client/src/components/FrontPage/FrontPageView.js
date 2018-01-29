@@ -8,25 +8,10 @@ import FilterForm from '../FilterForm';
 import cityArray from '../../constants/cityArray'
 import themeArray from '../../constants/themeArray';
 import difficultyArray from '../../constants/difficultyArray';
-import TeamsList from '../TeamList';
-import Filter from '../Filter';
 import FrontPageForm from '../FrontPageForm';
+import findPrice from '../../scripts/findPrice.js';
+import formatedDate from '../../scripts/formatedDate.js';
 
-const FilterContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-
-  .ui {
-    margin-bottom: 10px;
-  }
-`;
-
-const TeamHeader = ({ team }) =>
-  <span>
-    <p>{team.nom}</p>
-  </span>
-  
 class FrontPageView extends Component {
   constructor(props) {
     super(props);
@@ -41,13 +26,11 @@ class FrontPageView extends Component {
       date: '',
       theme: '',
       difficulty: '',
+      teamsSave: '',
       error: '',
     };
 
-    this.onFilterUpdate = this.onFilterUpdate.bind(this);
-    this.onTeamUpdate = this.onTeamUpdate.bind(this);
     this.stateUpdate = this.stateUpdate.bind(this);
-
     this.submitFilters = this.submitFilters.bind(this);
     this.onSelectCity = this.onSelectCity.bind(this);
     this.onSelectDate = this.onSelectDate.bind(this);
@@ -57,39 +40,99 @@ class FrontPageView extends Component {
     this.onSelectMaxPrice = this.onSelectMaxPrice.bind(this);
     this.onSelectMinHour = this.onSelectMinHour.bind(this);
     this.onSelectMaxHour = this.onSelectMaxHour.bind(this);
-    this.onTeamInfoUpdate = this.onTeamInfoUpdate.bind(this);
   }
 
   submitFilters(){
     if (this.state.teams != []){
-      var filteredTeams = [];
-      console.log(this.state.teams);
-      if (this.state.city != ''){
-
-      }
-      if (this.state.priceMax != 0){
-
-      }
-      if (this.state.playerNb != 0){
-
-      }
-      if (this.state.hourMin != 0){
-
-      }
-      if (this.state.hourMax != 0){
-
-      }
-      if (this.state.date != ''){
-
-      }
-      if (this.state.theme != ''){
-
-      }
-      if (this.state.difficulty != ''){
-
+      if (this.state.city || this.state.priceMax || this.state.playerNb || this.state.hourMin || this.state.hourMax || this.state.date || this.state.theme || this.state.difficulty){
+        var filteredTeams = [];
+        var teamsLen = this.state.teamsSave.length;
+        for (var i=0; i<teamsLen; i++){
+          var cityBool, priceMaxBool, playerNbBool, hourMinBool, hourMaxBool, dateBool, themeBool, difficultyBool;
+          if (this.state.city != ''){
+            cityBool = false;
+            if (this.state.city == this.state.teamsSave[i].Ville){
+              cityBool = true;
+            }
+          }
+          if (this.state.priceMax != 0){
+            priceMaxBool = false;
+            var prices = findPrice(this.state.teamsSave[i].Date, this.state.teamsSave[i].Tarif_creux, this.state.teamsSave[i].Tarif_plein, this.state.teamsSave[i].Creuses_pleines, this.state.teamsSave[i].Dates_speciales);
+            prices = prices.split(',');
+            var price = prices[this.state.teamsSave[i].Nb_joueurs - this.state.teamsSave[i].Nb_places_min + 1];
+            if (this.state.priceMax > price){
+              priceMaxBool = true;
+            }
+          }
+          if (this.state.playerNb != 0){
+            playerNbBool = false;
+            if (this.state.playerNb <= this.state.teamsSave[i].Nb_places_max - this.state.teamsSave[i].Nb_joueurs){
+              playerNbBool = true;
+            }
+          }
+          if (this.state.hourMin != 0){
+            hourMinBool = false;
+            var date = formatedDate(this.state.teamsSave[i].Date);
+            var colonRegex = /:/g;
+            var index = colonRegex.exec(date).index;
+            var hour = date.substring(index - 2, index);
+            if (this.state.hourMin <= hour){
+              hourMinBool = true;
+            }
+          }
+          if (this.state.hourMax != 0){
+            hourMaxBool = false;
+            var date = formatedDate(this.state.teamsSave[i].Date);
+            var colonRegex = /:/g;
+            var index = colonRegex.exec(date).index;
+            var hour = date.substring(index - 2, index);
+            if (this.state.hourMax >= hour){
+              hourMaxBool = true;
+            }
+          }
+          if (this.state.date != ''){
+            dateBool = false;
+            var date = this.state.teamsSave[i].Date.split('T')[0];
+            var dateRegex = RegExp(date, "g");
+            if (dateRegex.exec(this.state.date)){
+              dateBool = true;
+            }
+          }
+          if (this.state.theme != ''){
+            themeBool = false;
+            if (this.state.theme == this.state.teamsSave[i].Theme){
+              themeBool = true;
+            }
+          }
+          if (this.state.difficulty != ''){
+            difficultyBool = false;
+            if (this.state.difficultyBool == this.state.teamsSave[i].Difficulte){
+              difficultyBool = true;
+            }
+          }
+          var check = [];
+          var valid = true;
+          if (cityBool != undefined){ check.push(cityBool); }
+          if (priceMaxBool != undefined){ check.push(priceMaxBool); }
+          if (playerNbBool != undefined){ check.push(playerNbBool); }
+          if (hourMinBool != undefined){ check.push(hourMinBool); }
+          if (hourMaxBool != undefined){ check.push(hourMaxBool); }
+          if (dateBool != undefined){ check.push(dateBool); }
+          if (themeBool != undefined){ check.push(themeBool); }
+          if (difficultyBool != undefined){ check.push(difficultyBool); }
+          var checkLen = check.length;
+          for (var j=0; j<checkLen; j++){
+            if (!check[j]){
+              valid = false;
+            }
+          }
+          if (valid){ filteredTeams.push(this.state.teamsSave[i]); }
+        }
+        this.stateUpdate(filteredTeams);
+      } else {
+        this.stateUpdate(this.state.teamsSave);
       }
     }
-  this.onTeamInfoUpdate()
   }
 
   onSelectCity(event){
@@ -124,23 +167,14 @@ class FrontPageView extends Component {
     this.setState({ hourMax: event.target.value });
   }
 
-  onTeamInfoUpdate(){
-    this.props.onFilterUpdate(this.state.teams);
-  }
-
   componentDidMount() {
     
   }
 
-  onFilterUpdate(event){
-    this.setState({ teams: event });
-  }
-
-  onTeamUpdate(event){
-    this.setState({ teams: event });
-  }
-
   stateUpdate(teams){
+    if (this.state.teamsSave.length < teams.length){
+      this.setState({ teamsSave: teams });
+    }
     this.setState({ teams: teams })
   }
 
@@ -151,7 +185,6 @@ class FrontPageView extends Component {
       }
       return (<p></p>);
     } else {
-      console.log("toto");
       return(
       <FrontPageForm>
         <div>
@@ -219,5 +252,20 @@ class FrontPageView extends Component {
   }
 
 }
+
+const FilterContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+
+  .ui {
+    margin-bottom: 10px;
+  }
+`;
+
+const TeamHeader = ({ team }) =>
+  <span>
+    <p>{team.nom}</p>
+  </span>
 
 export default FrontPageView;

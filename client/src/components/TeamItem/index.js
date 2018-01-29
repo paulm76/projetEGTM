@@ -22,11 +22,12 @@ class TeamItem extends React.Component {
   render(){
 
     const {team} = this.props;
+    console.log(team);
     var minutes = team.Date.substring(14,16);
     var hours = team.Date.substring(11,13);
     var day = team.Date.substring(8,10);
     var month = team.Date.substring(5,7);
-    var imagePath = formatePictureName(team.Etablissement, team.Room);
+    var imagePath = formatePictureName(team.Etablissement, team.Nom);
     var itemStyle = { width: '270px', height: '120px', borderTop: 'none', paddingTop: '5px', marginLeft: '20px' };
     var contentStyle = { backgroundImage: "url('" + imagePath + "')", backgroundSize: '270px 120px', backgroundRepeat: 'no-repeat', color:'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black', paddingLeft: '10px' };
     var headerStyle = { color: 'white' };
@@ -39,7 +40,7 @@ class TeamItem extends React.Component {
 
         <List.Description as="div">
           <List.Header as="h3" style={ headerStyle }>
-            <p>&nbsp;&nbsp;{team.Room}</p>
+            <p>&nbsp;&nbsp;{team.Nom}</p>
           </List.Header>
             
         </List.Description>

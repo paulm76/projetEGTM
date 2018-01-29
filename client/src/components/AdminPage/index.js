@@ -10,7 +10,7 @@ export default class AdminPage extends React.Component {
     super(props);
 
     this.state={
-      page:'administration',
+      page:'credentials',
     }
   }
 

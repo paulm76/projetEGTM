@@ -20,7 +20,6 @@ export default class UserList extends React.Component {
   }
 
   render() {
-    console.log(this.state.data);
     var length = this.state.data.length;
     for (var i=0; i<length; i++){
       this.state.data[i].Date_naissance = this.state.data[i].Date_naissance.substring(0, this.state.data[i].Date_naissance.length-8);
@@ -29,7 +28,7 @@ export default class UserList extends React.Component {
       this.state.data[i].Date_inscription = this.state.data[i].Date_inscription.replace('T',' ');
     }
     return(
-    <BootstrapTable data={ this.state.data } options={ { noDataText: 'Data not found' } }>
+    <BootstrapTable data={ this.state.data } options={ options }>
       <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } width="5%">ID</TableHeaderColumn>
       <TableHeaderColumn dataField='Nom' dataSort={ true }>Nom</TableHeaderColumn>
       <TableHeaderColumn dataField='Prenom' dataSort={ true }>Prénom</TableHeaderColumn>
@@ -42,4 +41,13 @@ export default class UserList extends React.Component {
   );
 
   }
+}
+
+const options = {
+  noDataText: 'Data not found',
+  onRowClick: handleClickRow,
+}
+
+function handleClickRow(rowKeys){
+  console.log(rowKeys.id);
 }

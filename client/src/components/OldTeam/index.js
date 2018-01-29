@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
-export default class CurrentTeam extends Component {
+export default class OldTeam extends Component {
 
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ export default class CurrentTeam extends Component {
   componentDidMount() {
     var headers = new Headers();
     var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
-    fetch('http://localhost:3001/currentTeam', init).then(res => res.json()).then(users => this.setState({ data: users, }));
+    fetch('http://localhost:3001/oldTeam', init).then(res => res.json()).then(users => this.setState({ data: users, }));
   }
 
   render() {

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import { Button } from 'semantic-ui-react';
-
-import styles from './index.css';
 
 export default class ValidTeam extends Component {
 
@@ -25,7 +23,7 @@ export default class ValidTeam extends Component {
     if (this.state.data !== ''){
 
       return(
-        <BootstrapTable data={ this.state.data } options={ options } deleteRow={ true } selectRow={ selectRowProp } style={ styles }>
+        <BootstrapTable data={ this.state.data } options={ options } deleteRow={ true } selectRow={ selectRowProp }>
           <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } width="7.5%">ID</TableHeaderColumn>
           <TableHeaderColumn dataField='adminLastName' dataSort={true}>Createur</TableHeaderColumn>
           <TableHeaderColumn dataField='Reservation' dataSort={ true }>Reservation</TableHeaderColumn>
@@ -46,6 +44,8 @@ export default class ValidTeam extends Component {
 const options = {
   onDeleteRow: handleDeleteRow,
   noDataText: 'Data not found',
+  onRowClick: handleClickRow,
+  deleteBtn: createCustomButton,
 }
 
 const selectRowProp = {
@@ -62,4 +62,17 @@ function handleDeleteRow(rowKeys){
   var headers = new Headers();
   var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
   fetch('http://localhost:3001/validTeam?teamId=' + query, init).then(res => res.json()).then(users => this.setState({ data: users, }));
+}
+
+function handleClickRow(rowKeys){
+  window.open("http://localhost:3000/team?teamId=" + rowKeys.id);
+}
+
+function createCustomButton(){
+  return (
+    <DeleteButton
+      btnText='Valider'
+      style={{ color: 'white', backgroundColor: 'black', borderColor: 'black' }}
+    />
+  );
 }

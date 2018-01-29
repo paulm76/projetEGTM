@@ -14,6 +14,8 @@ var escape = require('./routes/escape');
 var signup = require('./routes/signup');
 var filter = require('./routes/filter');
 var validTeam = require('./routes/validTeam');
+var currentTeam = require('./routes/currentTeam');
+var oldTeam = require('./routes/oldTeam');
 
 var mangopay = require('./routes/mangopay');
 
@@ -40,6 +42,8 @@ app.use('/escape', escape);
 app.use('/signup',signup);
 app.use('/filter', filter);
 app.use('/validTeam', validTeam);
+app.use('/currentTeam', currentTeam);
+app.use('/oldTeam', oldTeam);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -7,7 +7,7 @@ import Form from '../Form';
 import * as EmailValidator from 'email-validator';
 import ReactPasswordStrength from 'react-password-strength';
 import * as routes from '../../constants/routes';
-import styles from './style.css';
+//import styles from './style.css';
 
 /*------------------Init ------------------------*/
 const INITIAL_STATE = {
@@ -31,7 +31,7 @@ class SignUpForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  isMailInDatabase=(email)=>
+  isMailInDatabase = (email) =>
   {
     //function to be sure that no user can have the same mail than another
     //true if in database
