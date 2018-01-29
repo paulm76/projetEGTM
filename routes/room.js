@@ -15,19 +15,18 @@ router.use(function(req, res, next){
 router.use(cors());
 
 router.get('/', function(req, res, next) {
-  var roomName = req.query.room.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ");
+  var roomName = req.query.room.replace("_"," ");
   var allRes = [];
-  connection.query('SELECT * FROM room WHERE UPPER(Nom)=UPPER(\'' + roomName + '\');', function(errRoom, room){
+  connection.query('SELECT * FROM room WHERE Nom=\'' + roomName + '\';', function(errRoom, room){
   	if (!errRoom){
       var roomJSON = JSON.stringify(room);
       allRes.push(roomJSON);
       var escapeName = findEscapeName(roomJSON);
-console.log(escapeName);
-      connection.query('SELECT * FROM escape WHERE UPPER(Nom)=UPPER(\'' + escapeName + '\');', function(errEscape, escape){
+      connection.query('SELECT * FROM escape WHERE Nom=\'' + escapeName + '\';', function(errEscape, escape){
         if (!errEscape){
           var escapeJSON = JSON.stringify(escape);
           allRes.push(escapeJSON);
-          connection.query('SELECT * FROM equipe WHERE UPPER(Room)=UPPER(\'' + roomName + '\') ORDER BY date;', function(errTeams, teams){
+          connection.query('SELECT * FROM equipe WHERE Room=\'' + roomName + '\' ORDER BY date;', function(errTeams, teams){
             if (!errTeams){
               var teamsJSON = JSON.stringify(teams);
               allRes.push(teamsJSON);
@@ -51,8 +50,8 @@ console.log(escapeName);
 });
 
 function findEscapeName(room){
-  var escapeRegex = /Etablissement/g;
-  var firstIndex = escapeRegex.exec(room).index + 16;
+  var escapeRegex = /Escape_game/g;
+  var firstIndex = escapeRegex.exec(room).index + 14;
   var quoteRegex = /\"/g;
   quoteRegex.lastIndex = firstIndex;
   var lastIndex = quoteRegex.exec(room).index;
