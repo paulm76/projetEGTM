@@ -9,6 +9,7 @@ import 'react-select/dist/react-select.css';
 import TeamMembers from '../TeamMembers';
 import formatedDate from '../../scripts/formatedDate.js';
 import PageNotFound from '../PageNotFound';
+import formatePictureName from '../../scripts/formatePictureName.js';
 
 class Team extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class Team extends Component {
     if (!room || !team || !users || !admin || !prices || !places){
       return <PageNotFound />
     }
-
+      room[0].Photo = formatePictureName(room[0].Etablissement, room[0].Nom);
       const placesReserved = users.filter(user => user.id===userid).reduce((placesTotal,user)=>placesTotal+user.Places_prises,0)
       const usersLen = users.length;
 

@@ -21,12 +21,7 @@ router.get('/', function(req, res, next) {
   	if (!errTeam){
       var teamJSON = JSON.stringify(team);
       allRes.push(teamJSON);
-<<<<<<< HEAD
       connection.query('SELECT id_joueur as id,Nom, Prenom, Places_prises FROM joueur_equipe INNER JOIN utilisateur ON joueur_equipe.id_joueur=utilisateur.id WHERE id_equipe=' + id , function (errUser,user){
-=======
-      console.log(id);
-      connection.query('SELECT utilisateur.id, utilisateur.Nom, utilisateur.Prenom FROM utilisateur, (SELECT joueur_equipe.id_joueur FROM joueur_equipe WHERE joueur_equipe.id_equipe=' + id + ') as allIds WHERE utilisateur.id=allIds.id_joueur;', function (errUser,user){
->>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
         if (!errUser){
           var userJSON = JSON.stringify(user);
           allRes.push(userJSON);
@@ -34,13 +29,8 @@ router.get('/', function(req, res, next) {
           console.log(errUser);
         }
         var roomFind = findRoomName(teamJSON);
-<<<<<<< HEAD
-        connection.query('SELECT room.*, escape.Adresse, escape.Code_postal, escape.Ville, escape.Latitude, escape.Longitude FROM room INNER JOIN escape ON room.Etablissement=escape.Nom WHERE room.Nom=\'' + roomFind + '\';', function (errRoom,room){
+        connection.query('SELECT room.*, escape.Adresse, escape.Code_postal, escape.Ville, escape.Latitude, escape.Longitude, escape.Creuses_pleines, escape.Dates_spéciales FROM room INNER JOIN escape ON room.Etablissement=escape.Nom WHERE room.Nom=\'' + roomFind + '\';', function (errRoom,room){
           if (!errRoom){
-=======
-        connection.query('SELECT room.*, escape.Adresse, escape.Code_postal, escape.Ville, escape.Latitude, escape.Longitude, escape.Creuses_pleines, escape.Dates_speciales FROM room INNER JOIN escape ON room.Etablissement=escape.Nom WHERE room.Nom=\'' + roomFind + '\';', function (errRoom,room){
-          if (!errRoom){  
->>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
             var roomJSON = JSON.stringify(room);
             allRes.push(roomJSON);
             res.json(allRes);

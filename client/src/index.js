@@ -11,7 +11,6 @@ import './index.css';
 import 'semantic-ui-css/semantic.min.css';
 import  'react-password-strength/dist/style.css'
 import './bootstrap.min.css';
-<<<<<<< HEAD
 
 
 // Add the sessionReducer
@@ -33,7 +32,3 @@ ReactDOM.render(
     <App />
   </Provider>, document.getElementById('root')
 );
-=======
-ReactDOM.render(<App />, document.getElementById('root'));
-  
->>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e

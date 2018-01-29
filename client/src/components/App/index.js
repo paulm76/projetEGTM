@@ -15,16 +15,13 @@ import EscapePage from '../EscapePage';
 import Footer from '../Footer';
 import * as routes from '../../constants/routes';
 import AdminPage from '../AdminPage'
-<<<<<<< HEAD
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import PaymentValid from '../PaymentValid';
 import PayOut from '../PayOut';
-=======
 
->>>>>>> 2b8a18a7f118df432bfb174ecc44995c1683a49e
 
 import './index.css';
 
@@ -103,10 +100,6 @@ class App extends Component {
               component={PaymentValid}
             />
 
-            <Route
-              exact path='/payout'
-              component={PayOut}
-            />
             <Route component={PageNotFound}/>
           </ Switch>
 
