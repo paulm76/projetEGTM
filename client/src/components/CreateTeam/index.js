@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button,Message,Dropdown,Container} from 'semantic-ui-react';
+import { Input, Button,Message,Dropdown,Container,Label} from 'semantic-ui-react';
 import {  Link,  withRouter } from 'react-router-dom';
 import Form from '../Form';
 import moment from 'moment'
@@ -9,18 +9,21 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-const CreateTeamPage = ({ history }) =>
+const CreateTeamPage = ({ props,history }) =>
 <div>
-<CreateTeamForm history={history} />
+<CreateTeamForm history={history} props={props}/>
 </div>
+
+const today=moment()
 
 const INITIAL_STATE = {
   titre: '',//nom de l'equipe appelé titre dans la base de donnée
   nb_joueurs_max: 0,
-  date: '',
-  startDate: moment(),
+  startDate: today,
+  date: today,
   room:'',
-  invitedPlayers:[],
+  nomReservation:'',
+  emailReservation:'',
   //password: '',
   //error: null,
   //isOk:0,//0 to render the form 1 to render the connected state 2 to render the not ok state
@@ -30,7 +33,6 @@ const INITIAL_STATE = {
 class CreateTeamForm extends Component {
   constructor(props) {
     super(props);
-
     this.handleChange = this.handleChange.bind(this);
     this.state = { ...INITIAL_STATE };
   }
@@ -45,10 +47,11 @@ class CreateTeamForm extends Component {
     const {
       titre,
       nb_joueurs_max,
-      date,
       startDate,
+      date,
       room,
-      invitedPlayers,
+      nomReservation,
+      emailReservation,
     } = this.state;
 
     var url="http://localhost:3001/createteam";
@@ -59,7 +62,7 @@ class CreateTeamForm extends Component {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&date='+startDate+'&room='+room
+      body: 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&date='+startDate+'&room='+room+'&nomReservation='+nomReservation+'&emailReservation='+emailReservation
     })
   };
 
@@ -68,10 +71,11 @@ class CreateTeamForm extends Component {
     const {
       titre,
       nb_joueurs_max,
-      date,
       startDate,
+      date,
       room,
-      invitedPlayers,
+      nomReservation,
+      emailReservation,
     } = this.state;
 
     const isInvalid =
@@ -166,7 +170,7 @@ return(
   placeholder='Nombre maximum de joueurs souhaités'
   fluid selection options={dropDownMaxNumber}
   />
-
+  <Label>Préciser le début de la partie</Label>
   <DatePicker
   placeholderText="Date de la partie"
   selected={this.state.startDate}
@@ -184,12 +188,21 @@ return(
   placeholder="L'Escape Room"
   fluid search selection options={options} />
 
-  <Dropdown
-  onChange={(event, data) => {
-    this.setState({invitedPlayers: data.value});
-  }}
-  placeholder='Joueurs'
-  fluid multiple search selection options={options} />
+  <Input
+  value={nomReservation}
+  onChange={event => this.setState({ nomReservation: event.target.value })}
+  type="text"
+  placeholder="Nom de la personne qui a réservé"
+  />
+
+  <Input
+  value={emailReservation}
+  onChange={event => this.setState({ emailReservation: event.target.value })}
+  type="text"
+  placeholder="Email de la personne qui a réservé"
+  />
+
+
 
   <Button disabled={isInvalid} type="submit">
   Créer l'équipe
@@ -203,7 +216,6 @@ return(
 }
 
 export default withRouter(CreateTeamPage);
-
 export {
   CreateTeamForm,
 };
