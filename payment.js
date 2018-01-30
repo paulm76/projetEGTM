@@ -1,4 +1,14 @@
 var schedule = require('node-schedule');
+var mangopay = require('mangopay2-nodejs-sdk');
+
+connection = mysql.createPool(conf);
+next();
+
+var api = new mangopay({
+    clientId: 'escapeteamup',
+    clientPassword: '1r4TmX1jonJBRAuXcdyyqPfvQ1KK7Kscb1OH7iubSkhCfxnYtZ',
+});
+
 
 const SettlePayment=(teamid)=>{
   connection.query('SELECT  room.Etablissement, equipe.id_admin  FROM room INNER JOIN equipe ON room.Nom=equipe.Room WHERE equipe.id=?', [teamid], function (errTeam,team){

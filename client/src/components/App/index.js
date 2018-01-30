@@ -8,7 +8,7 @@ import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import CreateTeamPage from '../CreateTeam';
 import PasswordForgetPage from '../PasswordForget';
-import AccountPage from '../Account';
+import MyAccount from '../MyAccount';
 import GainSimulator from '../GainSimulator';
 import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
@@ -21,7 +21,7 @@ import { sessionService } from 'redux-react-session';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import PaymentValid from '../PaymentValid';
-import PayOut from '../PayOut';
+
 
 
 import './index.css';
@@ -77,7 +77,7 @@ class App extends Component {
             />
             <PrivateRoute
               exact path={routes.ACCOUNT}
-              component={AccountPage}
+              component={MyAccount}
               authenticated={this.props.authenticated}
             />
             <Route

@@ -146,7 +146,7 @@ class TeamPage extends Component {
 
     const { open } = this.state;
     if (this.state.isLoading){
-      return <Loader />
+      return <Loader active inline='centered' size='massive' />
     }
   	if (this.state.teamInfo && this.state.teamInfo!="" && this.state.teamInfo!="null"){
 	    var admin;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button, Grid, Checkbox, Icon, Container } from 'semantic-ui-react';
+import { Input, Button, Grid, Checkbox, Icon, Container, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -14,6 +14,7 @@ class PaymentPage extends Component {
       price: this.props.price,
       place: this.props.place,
       card:'',
+      pageLoaded:false,
       isSaving:true,
       loading:false,
       cagnotte:0,
@@ -36,7 +37,9 @@ class PaymentPage extends Component {
     var headers = new Headers()
     var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
     fetch('http://localhost:3001/mangopay/getCard?userid=' + query.userid, init).then(blob => blob.json()).then(card =>  this.setState({ card: card.card, }))
-    fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + query.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
+    .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + query.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, })))
+    .then(this.setState({pageLoaded:true}))
+
   }
 
   onSubmit = (event) => {
@@ -63,6 +66,7 @@ class PaymentPage extends Component {
       room,
       team,
     } =this.props;
+    const pageLoaded = this.state.pageLoaded
 
     var realPrice;
     if (this.state.price == 0){
@@ -74,8 +78,10 @@ class PaymentPage extends Component {
 
 
     return (
+      <div>
+      {pageLoaded===false && <Loader active />}
 
-
+      {pageLoaded===true &&
 
       <form onSubmit={this.onSubmit} style={{padding:'20px',margin:'20px',minWidth:'400px'}}>
 
@@ -117,7 +123,7 @@ class PaymentPage extends Component {
          </Grid>
          </div>
        } <br/><br/>
-       <p>*Votre cagnotte a été déduite de ce prix</p>
+       <p>*Votre cagnotte qui contenait {this.state.cagnotte} € a été déduite de ce prix.</p>
       <Button loading={this.state.loading} animated type='submit' floated='right'>
         <Button.Content visible>Payer</Button.Content>
         <Button.Content hidden>
@@ -125,6 +131,8 @@ class PaymentPage extends Component {
         </Button.Content>
       </Button>
       </form>
+    }
+    </div>
 
     );
   }

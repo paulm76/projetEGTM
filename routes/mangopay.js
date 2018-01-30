@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var cors = require('cors');
 var mysql = require('mysql');
 var cors = require('cors');
 

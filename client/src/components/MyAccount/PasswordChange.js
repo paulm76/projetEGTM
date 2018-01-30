@@ -4,6 +4,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Input, Button, Label } from 'semantic-ui-react';
 import Form from '../Form';
+import crypto from 'crypto';
+
 
 
 export default class PasswordChange extends React.Component {
@@ -15,7 +17,9 @@ export default class PasswordChange extends React.Component {
         oldPW:'',
         newPW:'',
         newPWconfirm:'',
-        error:''
+        error:'',
+        message:"",
+        userid:this.props.userid,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,6 +37,7 @@ export default class PasswordChange extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     if (this.state.oldPW==='' || this.state.newPW==='' || this.state.newPWconfirm===''){
       this.setState({ error:'Veuillez remplir tous les champs !'});
     }
@@ -43,7 +48,29 @@ export default class PasswordChange extends React.Component {
       }
 
       else {
-        //SEND TO DB
+        const new1=crypto.createHmac('sha256',this.state.newPW).digest('hex');
+        const old1=crypto.createHmac('sha256',this.state.oldPW).digest('hex');
+        var url="http://localhost:3001/updatePassword";
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          mode: 'cors',
+          body: 'old='+old1+'&new='+new1+'&id='+this.state.userid
+        }).then(blob=>blob.json()).then((res)=>{
+          if(!res.verif){
+            this.setState({ error:"L'ancien mot de passe est incorrecte !"})
+          }
+          else{
+            if(res.Added){
+              this.setState({ message:"Le mot de passe a été changé !"})
+            }
+            else{
+              this.setState({error:"Une erreur s'est produite."})
+            }
+          }
+        })
       }
     }
 
@@ -74,7 +101,8 @@ export default class PasswordChange extends React.Component {
           <div className="Account-NewPassword-Confirm">
             <label for="newPWconfirm">Confirmation nouveau mot de passe: </label><Input type="text" name="newPWconfirm" onChange={this.handleChange}/>
           </div>
-          <Label color='red' basic style={AlertStyle} > {error}  </Label>
+          {this.state.message &&<Label color='green' basic style={AlertStyle} > {this.state.message}  </Label>}
+          {error &&<Label color='red' basic style={AlertStyle} > {error}  </Label>}
           <Button type="submit">Envoyer </Button>
           </Form>
         </div>

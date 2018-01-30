@@ -31,6 +31,7 @@ router.post('/',function(req, res) {
           prenom:result[0].Prenom,
         }
       }
+      connection.query("UPDATE utilisateur SET Date_derniere_connexion=NOW() WHERE id="+result[0].id)
       res.send(response);
       //console.log("else");
     }
