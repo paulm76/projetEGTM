@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Input, Button,Message,Dropdown,Container,Label} from 'semantic-ui-react';
+import { Input, Button,Message,Dropdown,Container,Label,TextArea} from 'semantic-ui-react';
 import {  Link,  withRouter } from 'react-router-dom';
 import Form from '../Form';
 import moment from 'moment'
 //import {DatePicker, DatePickerInput} from 'rc-datepicker';
 //import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import DatePicker from 'react-datepicker';
+import * as EmailValidator from 'email-validator';
+import { sessionService } from 'redux-react-session';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -16,25 +18,54 @@ const CreateTeamPage = ({ props,history }) =>
 
 const today=moment()
 
+//var options2=data();
+//console.log("options2"+data());
 const INITIAL_STATE = {
   titre: '',//nom de l'equipe appelé titre dans la base de donnée
   nb_joueurs_max: 0,
+  nb_joueurs_actuel: 0,
   startDate: today,
   date: today,
   room:'',
   nomReservation:'',
   emailReservation:'',
+  description:'',
+  roomlist:[],
+  userid:0,
   //password: '',
   //error: null,
   //isOk:0,//0 to render the form 1 to render the connected state 2 to render the not ok state
   //match:true,
 };
 
+
+
 class CreateTeamForm extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.state = { ...INITIAL_STATE };
+    var url="http://localhost:3001/createteam/getroom";
+    fetch(url, {
+      method: 'GET',
+      mode: 'cors'
+    })
+    .then(blob=>blob.json())
+    .then((response)=>{
+
+      //var result=JSON.parse(response);
+      var result = response.map((truc)=>{return {'key':response.indexOf(truc),'text':truc.Nom,'value':truc.Nom}})
+      console.log(result);
+      //console.log("test"+result);
+      //var newlist=roomlist.push(result);
+      //console.log("newlist"+newlist);
+      this.setState({roomlist:result});
+      //return result;
+      //data=response;
+      //console.log(data);
+    });
+    sessionService.loadUser().then(user=>{this.setState({userid:user.id});
+  console.log(user.id)});
   }
 
   handleChange(date) {
@@ -47,22 +78,28 @@ class CreateTeamForm extends Component {
     const {
       titre,
       nb_joueurs_max,
+      nb_joueurs_actuel,
       startDate,
       date,
       room,
       nomReservation,
       emailReservation,
+      description,
+      roomlist,
+      userid,
     } = this.state;
 
-    var url="http://localhost:3001/createteam";
 
+
+    var url="http://localhost:3001/createteam";
+    console.log("userid"+userid);
     fetch(url, {
       method: 'post',
       headers: {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&date='+startDate+'&room='+room+'&nomReservation='+nomReservation+'&emailReservation='+emailReservation
+      body: 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&nb_joueurs_actuel='+nb_joueurs_actuel+'&date='+startDate+'&room='+room+'&nomReservation='+nomReservation+'&emailReservation='+emailReservation+'&description='+description+'&userid='+userid
     })
   };
 
@@ -71,15 +108,27 @@ class CreateTeamForm extends Component {
     const {
       titre,
       nb_joueurs_max,
+      nb_joueurs_actuel,
       startDate,
       date,
       room,
       nomReservation,
       emailReservation,
+      description,
+      roomlist,
+      userid,
     } = this.state;
 
     const isInvalid =
-    titre==='';
+    titre===''||
+    nb_joueurs_max==0||
+    nb_joueurs_actuel==0||
+    startDate==date||
+    room===''||
+    nomReservation===''||
+    emailReservation===''||
+    !(EmailValidator.validate(emailReservation))||
+    nb_joueurs_actuel>=nb_joueurs_max;
 
     const dropDownMaxNumber=[
       {text:'1',
@@ -119,26 +168,8 @@ value:'11'
 value:'12'
 },
 ]
-const options = [
-  { key: 'angular', text: 'Angular', value: 'angular' },
-  { key: 'css', text: 'CSS', value: 'css' },
-  { key: 'design', text: 'Graphic Design', value: 'design' },
-  { key: 'ember', text: 'Ember', value: 'ember' },
-  { key: 'html', text: 'HTML', value: 'html' },
-  { key: 'ia', text: 'Information Architecture', value: 'ia' },
-  { key: 'javascript', text: 'Javascript', value: 'javascript' },
-  { key: 'mech', text: 'Mechanical Engineering', value: 'mech' },
-  { key: 'meteor', text: 'Meteor', value: 'meteor' },
-  { key: 'node', text: 'NodeJS', value: 'node' },
-  { key: 'plumbing', text: 'Plumbing', value: 'plumbing' },
-  { key: 'python', text: 'Python', value: 'python' },
-  { key: 'rails', text: 'Rails', value: 'rails' },
-  { key: 'react', text: 'React', value: 'react' },
-  { key: 'repair', text: 'Kitchen Repair', value: 'repair' },
-  { key: 'ruby', text: 'Ruby', value: 'ruby' },
-  { key: 'ui', text: 'UI Design', value: 'ui' },
-  { key: 'ux', text: 'User Experience', value: 'ux' },
-]
+
+
 //{event =>{ this.setState({ nb_joueurs_max: event.target.value });console.log(event.target.text)}}
 //this.props.setGroup(data.value);
 //this.setState({ nb_joueurs_max: data.value });
@@ -146,6 +177,13 @@ const options = [
 // }
 //chercher un react date picker
 this.handleChange = this.handleChange.bind(this);
+/*  const option = _.find(options, { value })
+  console.log(`Changed to text: ${option.text}`)
+}*/
+/*
+{(event, data) => {
+  this.setState({room: data.Nom});
+}}*/
 return(
 
   <Form onSubmit={this.onSubmit} id='createteamform'>
@@ -163,13 +201,21 @@ return(
   />
 
   <Dropdown
+  onChange={(event, data) => {
+    this.setState({nb_joueurs_actuel: data.value});
+  }}
+  placeholder='Nombre de joueurs actuel'
+  fluid selection options={dropDownMaxNumber}
+  />
 
+  <Dropdown
   onChange={(event, data) => {
     this.setState({nb_joueurs_max: data.value});
   }}
   placeholder='Nombre maximum de joueurs souhaités'
   fluid selection options={dropDownMaxNumber}
   />
+
   <Label>Préciser le début de la partie</Label>
   <DatePicker
   placeholderText="Date de la partie"
@@ -186,7 +232,7 @@ return(
     this.setState({room: data.value});
   }}
   placeholder="L'Escape Room"
-  fluid search selection options={options} />
+  fluid search selection options={roomlist} />
 
   <Input
   value={nomReservation}
@@ -201,7 +247,10 @@ return(
   type="text"
   placeholder="Email de la personne qui a réservé"
   />
-
+  <TextArea
+  value={description}
+  onChange={event => this.setState({ description: event.target.value })}
+  placeholder='Description' />
 
 
   <Button disabled={isInvalid} type="submit">
