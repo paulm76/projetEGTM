@@ -116,7 +116,7 @@ class App extends Component {
   }
 }
 
-const mapState = ({ session }) => ({
+const mapState = ({session}) => ({
   checked: session.checked,
   authenticated: session.authenticated
 });

@@ -52,12 +52,12 @@ router.post('/',function(req, res,next) {
   password=req.body.password;
   country=req.body.country;
   nationality=req.body.nationality;
+  const birthday = req.body.birthday;
   /*------------------Query ------------------------*/
-  var requete='Insert into utilisateur(Mot_de_passe,Nom,Prenom,Mail,Pays,Nationalité) values(';
+  var requete='Insert into utilisateur(Mot_de_passe,Nom,Prenom,Mail,Pays,Nationalité,Date_naissance) values(';
   requete+='"'+
   password
-  +'","'+nom+'","'+prenom+'","'+email+'","'+country+'","'+nationality+'")';
-
+  +'","'+nom+'","'+prenom+'","'+email+'","'+country+'","'+nationality+'","'+birthday+'")';
   query(connection,requete)
   .then(function()
   {

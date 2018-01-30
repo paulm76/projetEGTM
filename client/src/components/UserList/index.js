@@ -21,12 +21,16 @@ export default class UserList extends React.Component {
 
   render() {
     var length = this.state.data.length;
+
     for (var i=0; i<length; i++){
+      if(this.state.data[i].Date_naissance){
       this.state.data[i].Date_naissance = this.state.data[i].Date_naissance.substring(0, this.state.data[i].Date_naissance.length-8);
       this.state.data[i].Date_naissance = this.state.data[i].Date_naissance.replace('T',' ');
       this.state.data[i].Date_inscription = this.state.data[i].Date_inscription.substring(0, this.state.data[i].Date_inscription.length-8);
       this.state.data[i].Date_inscription = this.state.data[i].Date_inscription.replace('T',' ');
+      }
     }
+
     return(
     <BootstrapTable data={ this.state.data } options={ options }>
       <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } width="5%">ID</TableHeaderColumn>
