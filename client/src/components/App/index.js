@@ -6,6 +6,7 @@ import Navigation from '../Navigation';
 import FrontPage from '../FrontPage';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
+import CreateTeam from '../CreateTeam';
 import PasswordForgetPage from '../PasswordForget';
 import AccountPage from '../Account';
 import GainSimulator from '../GainSimulator';
