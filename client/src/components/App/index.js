@@ -6,7 +6,7 @@ import Navigation from '../Navigation';
 import FrontPage from '../FrontPage';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
-import CreateTeam from '../CreateTeam';
+import CreateTeamPage from '../CreateTeam';
 import PasswordForgetPage from '../PasswordForget';
 import AccountPage from '../Account';
 import GainSimulator from '../GainSimulator';
@@ -64,6 +64,11 @@ class App extends Component {
             <Route
               exact path={routes.SIGN_IN}
               component={SignInPage}
+              authenticated={this.props.authenticated}
+            />
+            <Route
+              exact path={routes.CREATE_TEAM}
+              component={CreateTeamPage}
               authenticated={this.props.authenticated}
             />
             <PublicRoute
