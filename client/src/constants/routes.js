@@ -15,7 +15,5 @@ export const TEAM_PAGE = '/team';
 export const ROOM_PAGE = '/room';
 export const ESCAPE_PAGE = '/escape';
 export const ADMIN_PAGE = '/admin';
-export const ADD_ESCAPE = '/admin/addEscape';
-export const ADD_ROOM = '/admin/addRoom';
 export const VALID_TEAM = '/admin/validTeam';
 export const PAYMENT_DONE = '/paymentdone';

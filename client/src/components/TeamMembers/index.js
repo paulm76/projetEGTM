@@ -20,11 +20,13 @@ class TeamMembers extends React.Component {
       width:'50px',
       height:'50px'
     }
-    var libres = []
-    for (var i = 0; i < this.state.libres; i++){
-      libres.push(i)
-    };
-
+    if (this.state.libres && this.state.libres>0)
+    {
+      var libres = []
+      for (var i = 0; i < this.state.libres; i++){
+        libres.push(i)
+      };
+    }
     return (
       <div style={{width: this.props.width, margin: 'auto', display:'flex'}}>
         {this.props.members.map(member =>
@@ -41,7 +43,8 @@ class TeamMembers extends React.Component {
           {this.props.text && <text x={33*this.props.ratio} y={70*this.props.ratio} text-anchor="middle" fill="#494949" style={{fontSize:13*this.props.ratio, textAlign:'center', fontWeight:500}}>{member.Prenom}  {member.Nom.substring(0,1)}.</text>}
           </svg></span>)}
 
-          <span>{this.props.libres && <span style={{ display: 'flex' }}>{libres.map((i)=>
+
+          <span>{(this.state.libres && libres.length>1) && <span style={{ display: 'flex' }}>{libres.map((i)=>
             <svg width={64*this.props.ratio} height={84*this.props.ratio} style={{flexBasis:'auto'}}>
           <defs>
             <pattern id="image0" x="0" y="0" height="100%" width="100%">

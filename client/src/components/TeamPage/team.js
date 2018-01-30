@@ -27,8 +27,8 @@ class Team extends Component {
 
   handleContextRef = contextRef => this.setState({ contextRef : contextRef })
 
-  handleChange(event, prices, places, usersLen, Nb_places_min){
-    this.props.dataCallback(prices[event.label + usersLen - Nb_places_min],places[event.value])
+  handleChange(event, prices, places, Nb_places_min){
+    this.props.dataCallback(prices[event.label + this.props.team[0].Nb_joueurs - Nb_places_min],places[event.value])
   }
 
   handleClick = () =>{
@@ -54,7 +54,6 @@ class Team extends Component {
     }
       room[0].Photo = formatePictureName(room[0].Etablissement, room[0].Nom);
       const placesReserved = users.filter(user => user.id===userid).reduce((placesTotal,user)=>placesTotal+user.Places_prises,0)
-      const usersLen = users.length;
 
 	    var realPrice = this.state.price;
 
@@ -116,18 +115,22 @@ class Team extends Component {
 	                <Card fluid>
 	                  <Image src={room[0].Photo}/>
 	                  <Card.Content>
-	                    <Grid centered columns={2}>
-	                      <Grid.Column >
-	                        <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event, prices, places, usersLen, room[0].Nb_places_min) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
+	                    {team[0].Nb_joueurs<team[0].Nb_joueurs_max &&<Grid centered columns={2}>
+	                       <Grid.Column >
+	                        <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event, prices, places, room[0].Nb_places_min) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
 	                      </Grid.Column>
 	                      <Grid.Column>
-	                        <b style={{'fontSize':'26px'}}>{this.state.place.label*realPrice} €</b>
-	                        {this.state.place.label>1 &&  <span> soit {this.state.price} € par personnes</span> }
+
+                          <div>
+                          <b style={{'fontSize':'26px'}}>{this.state.place.label*realPrice} €</b>
+                          {this.state.place.label>1 &&  <span> soit {this.state.price} € par personnes</span>}</div>
+
 	                      </Grid.Column>
-	                    </Grid>
-                      {placesReserved>0 && <Message>Vous avez déja réservé {placesReserved} places dans cette équipe</Message>}
+	                    </Grid>}
+                      {team[0].Nb_joueurs===team[0].Nb_joueurs_max && <p> Cette équipe est pleine ! </p>}
+                      {placesReserved>0 && <Message>Vous avez réservé {placesReserved} places dans cette équipe.</Message>}
 	                  </Card.Content>
-	                  <Button color='blue'attached='bottom' onClick={this.handleClick}> Rejoindre </Button>
+	                  <Button color='blue'attached='bottom' disabled={team[0].Nb_joueurs===team[0].Nb_joueurs_max} onClick={this.handleClick}> Rejoindre </Button>
 	                </Card>
 	              </Sticky>
 	            </div>

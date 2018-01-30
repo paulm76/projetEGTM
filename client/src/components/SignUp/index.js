@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   passwordTwo: '',
   nationality: '',
   country: '',
+  birthday:'',
   error: null,
   mailindatabase:false,
   step:1,
@@ -67,6 +68,7 @@ class SignUpForm extends Component {
       passwordOne,
       nationality,
       country,
+      birthday,
     } = this.state;
 
 
@@ -82,8 +84,17 @@ class SignUpForm extends Component {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash+'&country='+country+'&nationality='+nationality
-    })
+      body: 'prenom='+prenom+'&nom='+nom+'&email='+email+'&password='+hash+'&country='+country+'&nationality='+nationality+'&birthday='+birthday
+    }).then(()=>fetch("http://localhost:3001/mangopay/createUser", {
+      method: 'post',
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      mode: 'cors',
+      body: 'email='+email
+    }))
+
+
     this.setState({step:2});
   };
 
@@ -107,6 +118,7 @@ class SignUpForm extends Component {
       passwordOne,
       passwordTwo,
       error,
+      birthday,
       country,
       nationality,
       mailindatabase,
@@ -120,6 +132,7 @@ class SignUpForm extends Component {
     nom === ''||
     nationality===''||
     country===''||
+    birthday===''||
     !(EmailValidator.validate(email))||
     mailindatabase;
     /*------------------Form Render ------------------------*/
@@ -147,6 +160,12 @@ class SignUpForm extends Component {
         }}
         type="text"
         placeholder="Addresse Email"
+        />
+        <Input
+        value={birthday}
+        onChange={event => this.setState({ birthday: event.target.value })}
+        type="date"
+        placeholder="Date de naissance"
         />
         <CountryDropdown
         classes="input "

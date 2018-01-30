@@ -7,7 +7,6 @@ import 'react-select/dist/react-select.css';
 import Card from 'react-credit-cards';
 import request from 'request';
 import Form from '../Form';
-import {validate} from 'openiban';
 import MaskedInput from 'react-maskedinput';
 
 

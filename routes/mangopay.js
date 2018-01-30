@@ -22,21 +22,23 @@ router.get('/', function(req, res, next) {
   console.log(req.query)
 });
 
-router.get('/createUser', function(req, res, next) {
-  const userid=req.query.id;
-
-  connection.query('SELECT Mail, Nom, Prenom  FROM utilisateur WHERE id=?', [userid], function (errUser,user){
+router.post('/createUser', function(req, res, next) {
+  const email=req.body.email;
+  connection.query('SELECT id, Mail, Nom, Prenom,Pays, Nationalité,Date_naissance  FROM utilisateur WHERE Mail=?', [email], function (errUser,user){
     if (!errUser && user.length==1){
+      const date = user[0].Date_naissance.setHours(2)
+      const birthday = parseInt(date.toString().slice(0,-3))
         const myUser = {
           "FirstName": user[0].Prenom,
           "LastName": user[0].Nom,
-          "Birthday": 1300186358,
-          "Nationality": "FR",
-          "CountryOfResidence": "FR",
+          "Birthday": birthday,
+          "Nationality": user[0].Nationalité,
+          "CountryOfResidence":user[0].Pays,
           "PersonType": "NATURAL",
           "Email": user[0].Mail,
       };
       api.Users.create(myUser).then(function(model){
+        console.log(model)
         const myWallet={
         "Owners": [ model.Id ],
         "Description": "Cagnotte",
@@ -45,7 +47,7 @@ router.get('/createUser', function(req, res, next) {
 
         api.Wallets.create(myWallet).then(function(wallet){
             console.log({'userid':wallet.Owners[0], 'walletid':wallet.Id})
-                connection.query('UPDATE utilisateur SET UserID=?,WalletID=? WHERE id = ?', [wallet.Owners[0],wallet.Id,userid], function (error){
+                connection.query('UPDATE utilisateur SET UserID=?,WalletID=? WHERE id = ?', [wallet.Owners[0],wallet.Id,user[0].id], function (error){
                   if (!error){
                     res.send('Done');
                   }
@@ -57,6 +59,44 @@ router.get('/createUser', function(req, res, next) {
         console.log(errUser);
       }
     });
+  connection.on('error', function(err){
+  throw err;
+  return;
+  });
+});
+
+
+router.post('/createLegalUser', function(req, res, next) {
+  var myUser = new api.models.UserLegal({
+    Name: req.body.societe,
+    Email:req.body.mail,
+    LegalPersonType: 'BUSINESS',
+    LegalRepresentativeFirstName: req.body.prenom,
+    LegalRepresentativeLastName: req.body.nom,
+    LegalRepresentativeBirthday: parseInt((new Date(req.body.birthday)).setHours(2).toString().slice(0,-3)),
+    LegalRepresentativeNationality: req.body.nationalite,
+    LegalRepresentativeCountryOfResidence: req.body.pays
+});
+
+console.log(myUser)
+
+    api.Users.create(myUser).then(function(model){
+        console.log(model)
+        const myWallet={
+        "Owners": [ model.Id ],
+        "Description": "A Reverser à l'escape game",
+        "Currency": "EUR"
+        }
+
+        api.Wallets.create(myWallet).then(function(wallet){
+          console.log(`UPDATE escape SET MangoPayID=${wallet.Owners[0]},WalletID=${wallet.Id} WHERE Nom=${req.body.escape}`)
+                connection.query(`UPDATE escape SET MangoPayID=${wallet.Owners[0]},WalletID=${wallet.Id} WHERE Nom="${req.body.escape}"`, function (error){
+                  if (!error){
+                    res.send('Done');
+                  }
+                });
+              });
+      });
   connection.on('error', function(err){
   throw err;
   return;
@@ -110,11 +150,28 @@ router.get('/getWalletBalance', function(req, res, next) {
   });
 });
 
+router.get('/getCagnotte', function(req, res, next) {
+  const userid=req.query.userid;
+  connection.query('SELECT Cagnotte FROM utilisateur WHERE id='+userid, function (errUser,user){
+    if (!errUser && user.length==1){
+        res.send(user[0].Cagnotte.toString())
+      }
+     else {
+       res.send("0")
+        console.log(errUser);
+      }
+    });
+  connection.on('error', function(err){
+  throw err;
+  return;
+  });
+});
+
 router.get('/getCard', function(req, res, next) {
   const userid=req.query.userid;
   connection.query('SELECT CardID as cardId  FROM utilisateur WHERE id=?', [userid], function (errUser,user){
     console.log(user)
-    if (!errUser && user.length===1 && user!==null){
+    if (!errUser && user.length===1 && user!==null && user.CardID!==null){
         api.Cards.get(user[0].cardId).then( card => res.send({'statut':200, 'card':card}) )
       }
      else {
@@ -245,7 +302,7 @@ router.get('/createPayOut', function(req, res, next) {
         "AuthorId": user[0].mangopayId,
         "DebitedFunds": {
         "Currency": "EUR",
-        "Amount": user[0].Cagnotte
+        "Amount": user[0].Cagnotte*100
         },
         "Fees": {
         "Currency": "EUR",
@@ -278,16 +335,21 @@ router.post('/createPayIn', function(req, res, next) {
   const teamid =req.body.teamid;
   const places = req.body.places;
   const montantEscape = req.body.amountEscape
-  connection.query('SELECT UserID as mangopayId, WalletID as walledId, CardID as cardId  FROM utilisateur WHERE id='+ userid, function (errUser,user){
+  connection.query('SELECT UserID as mangopayId, WalletID as walledId, CardID as cardId, Cagnotte  FROM utilisateur WHERE id='+ userid, function (errUser,user){
     if (!errUser && user.length==1){
-      console.log(user[0])
+      var paidPrice=prix;
+      if(user[0].Cagnotte>0){
+        var paidPrice=Math.max(prix-user[0].Cagnotte,0)
+        connection.query(`UPDATE utilisateur SET Cagnotte=${Math.max(0,user[0].Cagnotte-prix)} WHERE id=`+userid)
+      }
+      if (paidPrice>0){
         api.PayIns.create({
-          "Tag":`{"userid":${userid},"teamid":${teamid},"places":${places},"montantEscape":${montantEscape}}`,
+          "Tag":`{"userid":${userid},"teamid":${teamid},"places":${places},"montantEscape":${montantEscape},"prix":${prix}}`,
           "AuthorId": user[0].mangopayId,
           "CreditedWalletId": user[0].walledId,
           "DebitedFunds": {
           "Currency": "EUR",
-          "Amount": prix*100,
+          "Amount": paidPrice*100,
           },
           "Fees": {
           "Currency": "EUR",
@@ -301,11 +363,24 @@ router.post('/createPayIn', function(req, res, next) {
         ).then(function(payIn){
                   res.send(payIn)
                 });
-            }
+              }
+              else{
+                connection.query(`INSERT INTO joueur_equipe (id_joueur, id_equipe, montantEscape, Places_prises, Prix) VALUES(${userid}, ${teamid}, ${montantEscape} , ${places}, ${prix})`, function (err,result){
+                  if (!err){
+                    connection.query(`UPDATE equipe SET Nb_joueurs=Nb_joueurs+1 WHERE id=${teamid};`)
+                    res.send({Status:'SUCCEEDED'})
+                  } else {
+                    console.log(errUser);
+                  }
+                })
+
+              }
+          }
              else {
                 console.log(errUser);
               }
             });
+
           connection.on('error', function(err){
           throw err;
           return;
@@ -318,15 +393,21 @@ router.post('/createWebPayIn', function(req, res, next) {
   const teamid =req.body.teamid;
   const places = req.body.places;
   const montantEscape = req.body.amountEscape
-  connection.query('SELECT UserID as mangopayId, WalletID as walledId FROM utilisateur WHERE id='+ userid, function (errUser,user){
+  connection.query('SELECT UserID as mangopayId, WalletID as walledId, Cagnotte FROM utilisateur WHERE id='+ userid, function (errUser,user){
     if (!errUser && user.length==1){
+      var paidPrice=prix;
+      if(user[0].Cagnotte>0){
+        var paidPrice=Math.max(prix-user[0].Cagnotte,0)
+        connection.query(`UPDATE utilisateur SET Cagnotte=${Math.max(0,user[0].Cagnotte-prix)} WHERE id=`+userid)
+      }
+      if (paidPrice>0){
         api.PayIns.create({
-          "Tag":`{"userid":${userid},"teamid":${teamid},"places":${places},"montantEscape":${montantEscape}}`,
+          "Tag":`{"userid":${userid},"teamid":${teamid},"places":${places},"montantEscape":${montantEscape},"prix":${prix}}`,
           "AuthorId": user[0].mangopayId,
           "CreditedWalletId": user[0].walledId,
           "DebitedFunds": {
           "Currency": "EUR",
-          "Amount": prix*100,
+          "Amount": paidPrice*100,
           },
           "Fees": {
           "Currency": "EUR",
@@ -342,6 +423,17 @@ router.post('/createWebPayIn', function(req, res, next) {
           console.log(payIn)
                   res.send(payIn)
                 });
+              }
+              else{
+                connection.query(`INSERT INTO joueur_equipe (id_joueur, id_equipe, montantEscape, Places_prises, Prix) VALUES(${userid}, ${teamid}, ${montantEscape} , ${places}, ${prix})`, function (err,result){
+                  if (!err){
+                    connection.query(`UPDATE equipe SET Nb_joueurs=Nb_joueurs+1 WHERE id=${teamid};`)
+                    res.send({PaidWithCagnotte:true})
+                  } else {
+                    console.log(errUser);
+                  }
+                });
+              }
             }
              else {
                 console.log(errUser);
@@ -355,23 +447,23 @@ router.post('/createWebPayIn', function(req, res, next) {
 
 router.get('/settleTransfers', function(req, res, next) {
   const teamid=req.query.teamid;
-  connection.query('SELECT  room.*  FROM room INNER JOIN equipe ON room.id=equipe.room_id WHERE equipe.id=?', [teamid], function (errRoom,room){
+  connection.query('SELECT  room.Etablissement, equipe.id_admin  FROM room INNER JOIN equipe ON room.Nom=equipe.Room WHERE equipe.id=?', [teamid], function (errTeam,team){
     connection.query('SELECT  *  FROM joueur_equipe WHERE teamid=?', [teamid], function (errMembers,members){
-      connection.query('SELECT  UserID as mangopayId, WalledID as walledId  FROM utilisateur WHERE id=?', [members[0].userid], function (errCreator,creator){
+      connection.query('SELECT  UserID as mangopayId, WalledID as walledId  FROM utilisateur WHERE id=?', [team[0].id_admin], function (errCreator,creator){
       members.map(function(member){
-        if (members.indexOf(member)!==0){
+        if (member.id_joueur!==id_admin){
         connection.query('SELECT  UserID as mangopayId, WalledID as walledId  FROM utilisateur WHERE id=?', [member.userid], function (errUser,user){
-          connection.query('SELECT  UserID as mangopayId, WalledID as walledId ,commission  FROM escape WHERE id=?', [room[0].escapeId], function (errEscape,escape){
+          connection.query('SELECT  MangoPayID as mangopayId, WalledID as walledId ,Commission  FROM escape WHERE Nom=?', [team[0].Etablissement], function (errEscape,escape){
           if (!errUser && user.length==1 && !errEscape && escape.length==1){
               api.Transfers.create({
                 "AuthorId":  user[0].mangopayId,
                 "DebitedFunds": {
                 "Currency": "EUR",
-                "Amount": member.montantEscape
+                "Amount": member.montantEscape*100
                 },
                 "Fees": {
                 "Currency": "EUR",
-                "Amount": member.montantEscape*escape[0].Commission
+                "Amount": member.montantEscape*escape[0].Commission*100
                 },
                 "DebitedWalletId": user[0].walletId,
                 "CreditedWalletId": escape[0].walledId
@@ -382,7 +474,11 @@ router.get('/settleTransfers', function(req, res, next) {
                 "AuthorId":  user[0].mangopayId,
                 "DebitedFunds": {
                 "Currency": "EUR",
-                "Amount": members[members.length-1].payed -"amount"
+                "Amount": (members[members.length-1].payed -member.montantEscape)*100
+                },
+                "Fees": {
+                "Currency": "EUR",
+                "Amount": 0
                 },
                 "DebitedWalletId": user[0].walletId,
                 "CreditedWalletId": creator.walledId
