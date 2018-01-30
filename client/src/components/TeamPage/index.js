@@ -45,7 +45,7 @@ class TeamPage extends Component {
   	var query = this.props.location.search
   	var id = query.substring(8, query.length);
 	var headers = new Headers();
-	var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+	var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
 	fetch('http://localhost:3001/team?teamId=' + id, init).then(res => res.json())
   .then((teamInfo) => {
     var team = JSON.parse(teamInfo[0]);
@@ -76,11 +76,13 @@ class TeamPage extends Component {
 
     const {
       prices,
-      team
+      team,
+      room
     } = this.state
     const userid=this.state.userid;
     const history=this.props.history;
-    const amountEscape=prices[team[0].Nb_joueurs+this.state.place.label]*(team[0].Nb_joueurs+this.state.place.label)-prices[team[0].Nb_joueurs]*team[0].Nb_joueurs;
+
+    const amountEscape=prices[team[0].Nb_joueurs+this.state.place.label-room[0].Nb_places_min+1]*(team[0].Nb_joueurs+this.state.place.label)-prices[team[0].Nb_joueurs-room[0].Nb_places_min+1]*team[0].Nb_joueurs;
 
     var headers = new Headers();
     headers.append('Content-Type','application/x-www-form-urlencoded')

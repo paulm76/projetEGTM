@@ -12,23 +12,38 @@ class Navigation extends Component {
     super(props);
 
     this.state = {
-      Auth:this.props.authenticated
+      Auth:this.props.authenticated,
+      cagnotte:0,
+      userid:'',
     };
   }
 
   componentDidMount() {
+
+    if(this.props.Auth){
+      var init = { method: 'GET', mode: 'cors', cache: 'default' };
+      sessionService.loadUser().then(user=>this.setState({userid:user.No, authenticated:true}))
+      .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + this.state.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
+)
+
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({Auth:nextProps.authenticated})
+    if(nextProps.authenticated){
+      var init = { method: 'GET', mode: 'cors', cache: 'default' };
+      sessionService.loadUser().then(user=>this.setState({userid:user.No, nom:user.nom,prenom:user.prenom, authenticated:true}))
+      .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + this.state.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
+)    }
   }
 
 
   render() {
-    const{Auth} =this.state;
+    const {Auth} = this.state;
   	return(
       <div>
-    	  {Auth && <NavigationAuth />}
+    	  {Auth && <NavigationAuth cagnotte={this.state.cagnotte} />}
         {!Auth && <NavigationNonAuth />}
       </div>
   	);
@@ -85,6 +100,7 @@ const NavigationAuth = () =>
       <Link to={routes.GAIN_SIMULATOR}>Simulateur de gains</Link>
     </Menu.Item>
     <Menu.Item>
+
       <Link to={routes.ACCOUNT}>Mon compte</Link>
     </Menu.Item>
     <Menu.Item>

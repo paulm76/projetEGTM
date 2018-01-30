@@ -27,8 +27,14 @@ class Team extends Component {
 
   handleContextRef = contextRef => this.setState({ contextRef : contextRef })
 
-  handleChange(event, prices, places, Nb_places_min){
-    this.props.dataCallback(prices[event.label + this.props.team[0].Nb_joueurs - Nb_places_min],places[event.value])
+  handleChange(event){
+    const {
+      room,
+      team,
+      places,
+      prices
+    } =this.props;
+    this.props.dataCallback(prices[event.label + this.props.team[0].Nb_joueurs - this.props.room[0].Nb_places_min],places[event.value])
   }
 
   handleClick = () =>{
@@ -117,7 +123,7 @@ class Team extends Component {
 	                  <Card.Content>
 	                    {team[0].Nb_joueurs<team[0].Nb_joueurs_max &&<Grid centered columns={2}>
 	                       <Grid.Column >
-	                        <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event, prices, places, room[0].Nb_places_min) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
+	                        <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
 	                      </Grid.Column>
 	                      <Grid.Column>
 
