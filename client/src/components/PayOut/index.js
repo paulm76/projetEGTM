@@ -149,9 +149,8 @@ class PayOut extends Component {
 
       {this.state.step===0 &&
         <div>
-      <h2>Veuillez rentrer un Compte Bancaire
-      <br/>et vos Données Personelles </h2>
-      <MaskedInput value={Iban} style={{fontSize:'20px', textAlign:'center'}}
+      <h2>Veuillez rentrer un Compte Bancaire et vos Données Personelles </h2>
+      <MaskedInput value={Iban} style={{fontSize:'28px', textAlign:'center'}}
       mask="AA11 1111 1111 1111 1111 #### 111"
       name="iban" style={{padding:'4px', minWidth:'60%'}}
       onChange={event => this.setState({ Iban: event.target.value })}/> <br/>

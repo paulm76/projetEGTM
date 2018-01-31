@@ -45,7 +45,7 @@ class TeamPage extends Component {
   	var query = this.props.location.search
   	var id = query.substring(8, query.length);
 	var headers = new Headers();
-	var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+	var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
 	fetch('http://localhost:3001/team?teamId=' + id, init).then(res => res.json())
   .then((teamInfo) => {
     var team = JSON.parse(teamInfo[0]);
@@ -54,7 +54,7 @@ class TeamPage extends Component {
     var prices = findPrice(team[0].Date, room[0].Tarif_creux, room[0].Tarif_plein, room[0].Creuses_pleines, room[0].Dates_speciales, room[0].Zone_scolaire);
     prices = prices.split(',');
     var places = []
-    for (var i=0; i<room[0].Nb_places_max - team[0].Nb_joueurs; i++){
+    for (var i=0; i<team[0].Nb_joueurs_max - team[0].Nb_joueurs; i++){
       	 places.push({value: i, label: i + 1});
     }
     this.setState({teamInfo: teamInfo, isLoading:false ,prices:prices, places:places, team:team, users:users, room:room,price:prices[team[0].Nb_joueurs-room[0].Nb_places_min+1]})
@@ -76,11 +76,13 @@ class TeamPage extends Component {
 
     const {
       prices,
-      team
+      team,
+      room
     } = this.state
     const userid=this.state.userid;
     const history=this.props.history;
-    const amountEscape=prices[team[0].Nb_joueurs+this.state.place.label]*(team[0].Nb_joueurs+this.state.place.label)-prices[team[0].Nb_joueurs]*team[0].Nb_joueurs;
+
+    const amountEscape=prices[team[0].Nb_joueurs+this.state.place.label-room[0].Nb_places_min+1]*(team[0].Nb_joueurs+this.state.place.label)-prices[team[0].Nb_joueurs-room[0].Nb_places_min+1]*team[0].Nb_joueurs;
 
     var headers = new Headers();
     headers.append('Content-Type','application/x-www-form-urlencoded')
@@ -116,7 +118,16 @@ class TeamPage extends Component {
         var options = { url:'http://localhost:3001/mangopay/createWebPayIn' , header: headers, form:form };
         request.post(options,(err, httpResponse, body) => {
           const res = JSON.parse(body);
+          if(res.RedirectURL){
             window.location.replace(res.RedirectURL)
+          }
+          else if(res.PaidWithCagnotte){
+            this.setState({ 'paystep':2, paymentValid:true})
+          }
+          else{
+            this.setState({ 'paystep':2, paymentValid:false})
+          }
+
         });
       }
     }
@@ -135,7 +146,7 @@ class TeamPage extends Component {
 
     const { open } = this.state;
     if (this.state.isLoading){
-      return <Loader />
+      return <Loader active inline='centered' size='massive' />
     }
   	if (this.state.teamInfo && this.state.teamInfo!="" && this.state.teamInfo!="null"){
 	    var admin;
@@ -150,7 +161,7 @@ class TeamPage extends Component {
 	      <div >
 	        <Team room={room} userid={this.state.userid} users={users} team={team} admin={admin} prices={prices} places={places} history={this.props.history} join={this.show} dataCallback={this.callbackTeam} place={this.state.place} price={this.state.price}/>
           <Modal open={open} onClose={this.close} little>
-            {this.state.paystep===0 && <PaymentPage history={this.props.history} place={this.state.place} price={this.state.price} params={{teamid:team[0].id, userid: this.state.userid}} history={this.props.history} paymentCallback={this.callbackPay} dataCallback={this.callbackTeam} prices={prices} places={places} room={room} usersLen={usersLen}/>}
+            {this.state.paystep===0 && <PaymentPage history={this.props.history} team={team} place={this.state.place} price={this.state.price} params={{teamid:team[0].id, userid: this.state.userid}} history={this.props.history} paymentCallback={this.callbackPay} dataCallback={this.callbackTeam} prices={prices} places={places} room={room} usersLen={usersLen}/>}
             {this.state.paystep===1 && <Card price={this.state.price*this.state.place.label} userid={this.state.userid} paymentCallback={this.callbackPay}/>}
             {this.state.paystep===2 && <PaymentValid modal paymentValid={this.state.paymentValid} transactionId={this.state.payInId}/>}
 

@@ -8,7 +8,7 @@ router.post('/',function(req, res) {
   email=req.body.email;
   var password="erreur password";
   password=req.body.password;
-  var requete="SELECT id, Nom, Prenom FROM utilisateur where mail='"+email+"' AND Mot_de_passe='"+password+"'";
+  var requete="SELECT id, Nom, Prenom FROM utilisateur where Mail='"+email+"' AND Mot_de_passe='"+password+"'";
   console.log(requete)
   connection.query(requete,function(err,result){
     if(err) throw err;
@@ -31,6 +31,7 @@ router.post('/',function(req, res) {
           prenom:result[0].Prenom,
         }
       }
+      connection.query("UPDATE utilisateur SET Date_derniere_connexion=NOW() WHERE id="+result[0].id)
       res.send(response);
       //console.log("else");
     }

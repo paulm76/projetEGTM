@@ -35,7 +35,7 @@ class TeamPage extends Component {
           'userid': metadata.userid,
           'teamid': metadata.teamid,
           'places': metadata.places,
-          'prix': transaction.DebitedFunds.Amount/100,
+          'prix': metadata.prix,
           'montantEscape': metadata.montantEscape,
           'txId': transaction.Id
       };

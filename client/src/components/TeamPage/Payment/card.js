@@ -65,21 +65,26 @@ class CardPage extends Component {
             }
         };
         request.post(options,(err, httpResponse, body) =>{
-          CardRegistrationData.RegistrationData = body;
-          if (body.substr(0,5)==='error'){
-            this.setState({error:true,loading:false})
+          if(err){
+            console.log(err)
           }
           else{
-          var headers = new Headers();
-          var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
-          fetch('http://localhost:3001/mangopay/updateCardRegistration?userid=' +this.props.userid + '&id='+ CardRegistrationData.Id +'&token='+ CardRegistrationData.RegistrationData, init)
-          .then(() =>paymentCallback(true,false))
-          .catch((error)=>{
-            console.log(error)
-            this.setState({error:true,loading:false})
-          })
-        }
-      });
+            CardRegistrationData.RegistrationData = body;
+            if (body.substr(0,5)==='error'){
+              this.setState({error:true,loading:false})
+            }
+            else{
+            var headers = new Headers();
+            var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
+            fetch('http://localhost:3001/mangopay/updateCardRegistration?userid=' +this.props.userid + '&id='+ CardRegistrationData.Id +'&token='+ CardRegistrationData.RegistrationData, init)
+            .then(() =>paymentCallback(true,false))
+            .catch((error)=>{
+              console.log(error)
+              this.setState({error:true,loading:false})
+              })
+            }
+          }
+        });
 
   }
 

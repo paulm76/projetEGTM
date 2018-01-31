@@ -20,29 +20,29 @@ export default class UserList extends React.Component {
   }
 
   render() {
-    if (this.state.data !== ''){
-      var fetchDatas = this.state.data;
-      var length = fetchDatas.length;
-      for (var i=0; i<length; i++){
-        fetchDatas[i].Date_naissance = fetchDatas[i].Date_naissance.substring(0, fetchDatas[i].Date_naissance.length-8);
-        fetchDatas[i].Date_naissance = fetchDatas[i].Date_naissance.replace('T',' ');
-        fetchDatas[i].Date_inscription = fetchDatas[i].Date_inscription.substring(0, fetchDatas[i].Date_inscription.length-8);
-        fetchDatas[i].Date_inscription = fetchDatas[i].Date_inscription.replace('T',' ');
+    var length = this.state.data.length;
+
+    for (var i=0; i<length; i++){
+      if(this.state.data[i].Date_naissance){
+      this.state.data[i].Date_naissance = this.state.data[i].Date_naissance.substring(0, this.state.data[i].Date_naissance.length-8);
+      this.state.data[i].Date_naissance = this.state.data[i].Date_naissance.replace('T',' ');
+      this.state.data[i].Date_inscription = this.state.data[i].Date_inscription.substring(0, this.state.data[i].Date_inscription.length-8);
+      this.state.data[i].Date_inscription = this.state.data[i].Date_inscription.replace('T',' ');
       }
-      return(
-        <BootstrapTable data={ fetchDatas } options={ options }>
-          <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } width="5%">ID</TableHeaderColumn>
-          <TableHeaderColumn dataField='Nom' dataSort={ true }>Nom</TableHeaderColumn>
-          <TableHeaderColumn dataField='Prenom' dataSort={ true }>Prénom</TableHeaderColumn>
-          <TableHeaderColumn dataField='Date_naissance' dataSort={ true }>Naissance</TableHeaderColumn>
-          <TableHeaderColumn dataField='Mail' dataSort={ true }>Mail</TableHeaderColumn>
-          <TableHeaderColumn dataField='Date_inscription' dataSort={ true }>Inscription</TableHeaderColumn>
-          <TableHeaderColumn dataField='Nb_parties' dataSort={ true }>Parties jouées</TableHeaderColumn>
-        </BootstrapTable>
-      );
-    } else {
-      return (<p></p>);
     }
+
+    return(
+    <BootstrapTable data={ this.state.data } options={ options }>
+      <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } width="5%">ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='Nom' dataSort={ true }>Nom</TableHeaderColumn>
+      <TableHeaderColumn dataField='Prenom' dataSort={ true }>Prénom</TableHeaderColumn>
+      <TableHeaderColumn dataField='Date_naissance' dataSort={ true }>Naissance</TableHeaderColumn>
+      <TableHeaderColumn dataField='Mail' dataSort={ true }>Mail</TableHeaderColumn>
+      <TableHeaderColumn dataField='Date_inscription' dataSort={ true }>Inscription</TableHeaderColumn>
+      <TableHeaderColumn dataField='Nb_parties' dataSort={ true }>Parties jouées</TableHeaderColumn>
+    </BootstrapTable>
+
+  );
   }
 }
 

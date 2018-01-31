@@ -6,8 +6,9 @@ import Navigation from '../Navigation';
 import FrontPage from '../FrontPage';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
+import CreateTeamPage from '../CreateTeam';
 import PasswordForgetPage from '../PasswordForget';
-import AccountPage from '../MyAccount';
+import MyAccount from '../MyAccount';
 import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
 import EscapePage from '../EscapePage';
@@ -67,13 +68,18 @@ class App extends Component {
               component={SignInPage}
               authenticated={this.props.authenticated}
             />
+            <Route
+              exact path={routes.CREATE_TEAM}
+              component={CreateTeamPage}
+              authenticated={this.props.authenticated}
+            />
             <PublicRoute
               exact path={routes.PASSWORD_FORGET}
               component={PasswordForgetPage}
             />
             <PrivateRoute
               exact path={routes.ACCOUNT}
-              component={AccountPage}
+              component={MyAccount}
               authenticated={this.props.authenticated}
             />
             <Route
@@ -128,7 +134,7 @@ class App extends Component {
   }
 }
 
-const mapState = ({ session }) => ({
+const mapState = ({session}) => ({
   checked: session.checked,
   authenticated: session.authenticated
 });

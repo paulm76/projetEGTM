@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
-import { Input, Button, Grid, Checkbox, Icon, Container } from 'semantic-ui-react';
+import { Input, Button, Grid, Checkbox, Icon, Container, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
-import queryString from 'query-string';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Card from 'react-credit-cards';
 
 
-
-const PaymentPage = ({history, params, prices, places, room, usersLen, price, place, dataCallback, paymentCallback}) => {
-  return(<Payment paymentCallback={paymentCallback} dataCallback={dataCallback} price={price} place={place} room={room} usersLen={usersLen} prices={prices} places={places} history={history} query={params}/>)
-}
-
-class Payment extends Component {
+class PaymentPage extends Component {
   constructor(props) {
     super(props);
 
@@ -20,16 +14,18 @@ class Payment extends Component {
       price: this.props.price,
       place: this.props.place,
       card:'',
+      pageLoaded:false,
       isSaving:true,
-      loading:false
+      loading:false,
+      cagnotte:0,
      };
 
      this.handleChange = this.handleChange.bind(this);
      this.handleModifier = this.handleModifier.bind(this);
   }
 
-  handleChange(event, prices, places, usersLen, Nb_places_min){
-    this.props.dataCallback(prices[event.label + usersLen - Nb_places_min],places[event.value])
+  handleChange(event, prices, places, Nb_places_min){
+    this.props.dataCallback(prices[event.label + this.props.team[0].Nb_joueurs - Nb_places_min],places[event.value])
   }
 
   handleModifier(event){
@@ -37,10 +33,13 @@ class Payment extends Component {
   }
 
   componentDidMount() {
-    const query = this.props.query;
+    const query = this.props.params;
     var headers = new Headers()
-    var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
+    var init = { method: 'GET', header: headers, mode: 'cors', cache: 'default' };
     fetch('http://localhost:3001/mangopay/getCard?userid=' + query.userid, init).then(blob => blob.json()).then(card =>  this.setState({ card: card.card, }))
+    .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + query.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, })))
+    .then(this.setState({pageLoaded:true}))
+
   }
 
   onSubmit = (event) => {
@@ -65,12 +64,13 @@ class Payment extends Component {
       prices,
       places,
       room,
-      usersLen,
+      team,
     } =this.props;
+    const pageLoaded = this.state.pageLoaded
 
     var realPrice;
     if (this.state.price == 0){
-      realPrice = prices[usersLen - room[0].Nb_places_min + 1]; //a revoir
+      realPrice = prices[team[0].Nb_joueurs - room[0].Nb_places_min + 1]; //a revoir
     } else {
       realPrice = this.state.price;
     }
@@ -78,8 +78,10 @@ class Payment extends Component {
 
 
     return (
+      <div>
+      {pageLoaded===false && <Loader active />}
 
-
+      {pageLoaded===true &&
 
       <form onSubmit={this.onSubmit} style={{padding:'20px',margin:'20px',minWidth:'400px'}}>
 
@@ -87,10 +89,10 @@ class Payment extends Component {
       <h2>Votre réservation </h2>
       <Grid centered columns={2}>
         <Grid.Column >
-          <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event, prices, places, usersLen, room[0].Nb_places_min) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
+          <Select id="placeSelect" value={this.state.place} onChange={ (event) => this.handleChange(event, prices, places, room[0].Nb_places_min) } options={places} clearable={false} style={{width:'120px', minWidth: '120px', display:'in-line'}} menuContainerStyle={{width:'120px'}} />places
         </Grid.Column>
         <Grid.Column>
-          <b style={{'fontSize':'26px'}}>{this.state.place.label*realPrice} €</b>
+          <b style={{'fontSize':'26px'}}>{Math.max(this.state.place.label*realPrice-parseInt(this.state.cagnotte),0)} €*</b>
           {this.state.place.label>1 &&  <span> soit {this.state.price} € par personnes</span> }
         </Grid.Column>
       </Grid><br/>
@@ -102,6 +104,8 @@ class Payment extends Component {
       <Grid centered stackable columns={2}>
       <Grid.Column>
         <Card
+         name=""
+         cvc=""
          number ={this.state.card.Alias.replace(/X/g, "•")}
          expiry= {this.state.card.ExpirationDate}
          placeholders = {{'name':''}}
@@ -119,7 +123,7 @@ class Payment extends Component {
          </Grid>
          </div>
        } <br/><br/>
-
+       <p>*Votre cagnotte qui contenait {this.state.cagnotte} € a été déduite de ce prix.</p>
       <Button loading={this.state.loading} animated type='submit' floated='right'>
         <Button.Content visible>Payer</Button.Content>
         <Button.Content hidden>
@@ -127,6 +131,8 @@ class Payment extends Component {
         </Button.Content>
       </Button>
       </form>
+    }
+    </div>
 
     );
   }
