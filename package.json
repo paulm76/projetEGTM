@@ -15,12 +15,14 @@
     "email-validator": "^1.1.1",
     "express": "~4.15.5",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.1.1",
     "mangopay2-nodejs-sdk": "~1.5.0",
     "morgan": "~1.9.0",
     "mysql": "~2.15.0",
     "nodemailer": "~4.4.1",
-    "react-bootstrap-table": "^4.3.1",
-    "react-password-strength": "^2.3.1",
+    "payment": "^2.3.0",
+    "react-credit-cards": "^0.7.0",
+    "react-maskedinput": "^4.0.1",
     "serve-favicon": "~2.4.5"
   }
 }

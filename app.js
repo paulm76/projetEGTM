@@ -15,8 +15,9 @@ var signup = require('./routes/signup');
 var signin = require('./routes/signin');
 var filter = require('./routes/filter');
 var validTeam = require('./routes/validTeam');
-var currentTeam = require('./routes/currentTeam');
 var oldTeam = require('./routes/oldTeam');
+var currentTeam = require('./routes/currentTeam');
+var escapelist = require('./routes/escapelist');
 
 var mangopay = require('./routes/mangopay');
 
@@ -46,6 +47,7 @@ app.use('/filter', filter);
 app.use('/validTeam', validTeam);
 app.use('/currentTeam', currentTeam);
 app.use('/oldTeam', oldTeam);
+app.use('/escapelist', escapelist);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

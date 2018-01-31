@@ -7,20 +7,26 @@ import FrontPage from '../FrontPage';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
-import AccountPage from '../Account';
-import GainSimulator from '../GainSimulator';
+import AccountPage from '../MyAccount';
 import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
 import EscapePage from '../EscapePage';
 import Footer from '../Footer';
-import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
 import AdminPage from '../AdminPage'
-
+import { connect } from 'react-redux';
+import { sessionService } from 'redux-react-session';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import PaymentValid from '../PaymentValid';
+import PayOut from '../PayOut';
+import SellCondition from '../SellCondition';
+import About from '../About';
+import ContactUs from '../ContactUs';
+import EscapeGameList from '../EscapeGameList';
 
 import './index.css';
 
-const HN_URL = 'http://hn.algolia.com/api/v1/search';
 
 class App extends Component {
   constructor(props) {
@@ -34,10 +40,11 @@ class App extends Component {
   }
 
   render() {
+
     return (
       <Router>
         <div className="app">
-          <Navigation />
+          <Navigation authenticated={this.props.authenticated} />
 
           <hr/>
           <Switch>
@@ -50,25 +57,24 @@ class App extends Component {
               }
             />
 
-            <Route
+            <PublicRoute
               exact path={routes.SIGN_UP}
               component={SignUpPage}
+              authenticated={this.props.authenticated}
             />
             <Route
               exact path={routes.SIGN_IN}
               component={SignInPage}
+              authenticated={this.props.authenticated}
             />
-            <Route
+            <PublicRoute
               exact path={routes.PASSWORD_FORGET}
               component={PasswordForgetPage}
             />
-            <Route
+            <PrivateRoute
               exact path={routes.ACCOUNT}
               component={AccountPage}
-            />
-            <Route
-              exact path={routes.GAIN_SIMULATOR}
-              component={GainSimulator}
+              authenticated={this.props.authenticated}
             />
             <Route
               exact path={routes.TEAM_PAGE}
@@ -86,6 +92,32 @@ class App extends Component {
               exact path={routes.ADMIN_PAGE}
               component={AdminPage}
             />
+
+            <Route
+              exact path={routes.PAYMENT_DONE}
+              component={PaymentValid}
+            />
+
+            <Route
+              exact path={routes.SELL_CONDITION}
+              component={SellCondition}
+            />
+
+            <Route 
+              exact path={routes.ABOUT}
+              component={About}
+            />
+
+            <Route 
+              exact path={routes.CONTACT}
+              component={ContactUs}
+            />
+
+            <Route 
+              exact path={routes.ESCPAPEGAME}
+              component={EscapeGameList}
+            />
+
             <Route component={PageNotFound}/>
           </ Switch>
 
@@ -96,5 +128,9 @@ class App extends Component {
   }
 }
 
-//export default withAuthentication(App);
-export default App;
+const mapState = ({ session }) => ({
+  checked: session.checked,
+  authenticated: session.authenticated
+});
+
+export default connect(mapState)(App);

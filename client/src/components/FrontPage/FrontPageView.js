@@ -3,7 +3,6 @@ import { Loader, List, Input, Button, Select, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import TeamItem from '../TeamItem';
-import EscapeGameList from '../EscapeGameList';
 import FilterForm from '../FilterForm';
 import cityArray from '../../constants/cityArray'
 import themeArray from '../../constants/themeArray';
@@ -27,6 +26,7 @@ class FrontPageView extends Component {
       theme: '',
       difficulty: '',
       teamsSave: '',
+      filter: false,
       error: '',
     };
 
@@ -59,7 +59,12 @@ class FrontPageView extends Component {
             priceMaxBool = false;
             var prices = findPrice(this.state.teamsSave[i].Date, this.state.teamsSave[i].Tarif_creux, this.state.teamsSave[i].Tarif_plein, this.state.teamsSave[i].Creuses_pleines, this.state.teamsSave[i].Dates_speciales);
             prices = prices.split(',');
-            var price = prices[this.state.teamsSave[i].Nb_joueurs - this.state.teamsSave[i].Nb_places_min + 1];
+            var price;
+            if (this.state.playerNb == 0){
+              price = prices[this.state.teamsSave[i].Nb_joueurs - this.state.teamsSave[i].Nb_places_min + 1];
+            } else {
+              price = prices[this.state.teamsSave[i].Nb_joueurs - this.state.teamsSave[i].Nb_places_min + this.state.playerNb + 1];
+            }
             if (this.state.priceMax > price){
               priceMaxBool = true;
             }
@@ -129,8 +134,10 @@ class FrontPageView extends Component {
           if (valid){ filteredTeams.push(this.state.teamsSave[i]); }
         }
         this.stateUpdate(filteredTeams);
+        this.setState({ filter: true });
       } else {
         this.stateUpdate(this.state.teamsSave);
+        this.setState({ filter: false });
       }
     }
   }
@@ -240,6 +247,8 @@ class FrontPageView extends Component {
               <TeamItem
                 key={team.objectID}
                 team={team}
+                playerNb={this.state.playerNb}
+                filter={this.state.filter}
               >
                 <TeamHeader team={team} />
               </TeamItem>
