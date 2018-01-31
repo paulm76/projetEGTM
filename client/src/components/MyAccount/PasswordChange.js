@@ -59,11 +59,12 @@ export default class PasswordChange extends React.Component {
           mode: 'cors',
           body: 'old='+old1+'&new='+new1+'&id='+this.state.userid
         }).then(blob=>blob.json()).then((res)=>{
+          console.log(res)
           if(!res.verif){
             this.setState({ error:"L'ancien mot de passe est incorrecte !"})
           }
           else{
-            if(res.Added){
+            if(res.added){
               this.setState({ message:"Le mot de passe a été changé !"})
             }
             else{
@@ -93,13 +94,13 @@ export default class PasswordChange extends React.Component {
         <h3> Modifier votre Mot de Passe </h3>
           <div className="Account-OldPassword">
             <label for="oldPW">Ancien mot de passe: </label>
-            <Input type="text" name="oldPW" onChange={this.handleChange}/>
+            <Input type="password" name="oldPW" onChange={this.handleChange}/>
           </div>
           <div className="Account-NewPassword">
-            <label for="newPW">Nouveau mot de passe: </label><Input type="text" name="newPW" onChange={this.handleChange}/>
+            <label for="newPW">Nouveau mot de passe: </label><Input type="password" name="newPW" onChange={this.handleChange}/>
           </div>
           <div className="Account-NewPassword-Confirm">
-            <label for="newPWconfirm">Confirmation nouveau mot de passe: </label><Input type="text" name="newPWconfirm" onChange={this.handleChange}/>
+            <label for="newPWconfirm">Confirmation nouveau mot de passe: </label><Input type="password" name="newPWconfirm" onChange={this.handleChange}/>
           </div>
           {this.state.message &&<Label color='green' basic style={AlertStyle} > {this.state.message}  </Label>}
           {error &&<Label color='red' basic style={AlertStyle} > {error}  </Label>}

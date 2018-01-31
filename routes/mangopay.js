@@ -328,7 +328,6 @@ router.get('/createPayOut', function(req, res, next) {
 });
 
 router.post('/createPayIn', function(req, res, next) {
-  console.log(req.body)
   const userid=req.body.userid;
   const prix=req.body.prix;
   const teamid =req.body.teamid;
@@ -396,7 +395,7 @@ router.post('/createWebPayIn', function(req, res, next) {
     if (!errUser && user.length==1){
       var paidPrice=prix;
       if(user[0].Cagnotte>0){
-        var paidPrice=Math.max(prix-user[0].Cagnotte,0)
+        paidPrice=Math.max(prix-user[0].Cagnotte,0)
         connection.query(`UPDATE utilisateur SET Cagnotte=${Math.max(0,user[0].Cagnotte-prix)} WHERE id=`+userid)
       }
       if (paidPrice>0){

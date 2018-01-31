@@ -24,9 +24,10 @@ class Navigation extends Component {
 
     if(this.props.Auth){
       var init = { method: 'GET', mode: 'cors', cache: 'default' };
-      sessionService.loadUser().then(user=>this.setState({userid:user.id, nom:user.nom,prenom:user.prenom}))
-      .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + this.state.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
-)
+      sessionService.loadUser().then(user=>{
+        this.setState({userid:user.id, nom:user.nom,prenom:user.prenom})
+        fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + user.id, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
+      })
 
     }
   }
@@ -35,10 +36,12 @@ class Navigation extends Component {
     this.setState({Auth:nextProps.authenticated})
     if(nextProps.authenticated){
       var init = { method: 'GET', mode: 'cors', cache: 'default' };
-      sessionService.loadUser().then(user=>this.setState({userid:user.id, nom:user.nom,prenom:user.prenom, authenticated:true}))
-      .then(fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + this.state.userid, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, }))
-)    }
+      sessionService.loadUser().then(user=>{
+        this.setState({userid:user.id, nom:user.nom,prenom:user.prenom})
+        fetch('http://localhost:3001/mangopay/getCagnotte?userid=' + user.id, init).then(blob => blob.json()).then(cagnotte =>  this.setState({ cagnotte: cagnotte, })
+      )})
   }
+}
 
 
   render() {

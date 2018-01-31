@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/updatePassword', function(req, res, next) {
   console.log(`SELECT id FROM utilisateur WHERE Mot_de_passe="${req.body.old}" && id=${req.body.id}`)
-  connection.query(`SELECT id FROM utilisateur WHERE Mot_de_passe=${req.body.old}`, function(errVerif, Verif){
+  connection.query(`SELECT id FROM utilisateur WHERE Mot_de_passe="${req.body.old}" && id=${req.body.id}`, function(errVerif, Verif){
     console.log(Verif)
     if (Verif && Verif[0].id===req.body.id){
     connection.query(`UPDATE utilisateur SET Mot_de_passe=${req.body.new} WHERE id=${req.body.id}`, function(errAdd, add){
