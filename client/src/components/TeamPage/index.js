@@ -86,6 +86,7 @@ class TeamPage extends Component {
 
     var headers = new Headers();
     headers.append('Content-Type','application/x-www-form-urlencoded')
+    console.log(headers)
     const form = {
       "userid":userid,
       "teamid":this.state.team[0].id,
@@ -93,10 +94,12 @@ class TeamPage extends Component {
       "prix":this.state.price*this.state.place.label,
       "places":this.state.place.label
     }
+    console.log(form)
     if (isSaved){
       var options = { url:'http://localhost:3001/mangopay/createPayIn' , header: headers, form:form };
       request.post(options,(err, httpResponse, body) => {
         const res = JSON.parse(body);
+        console.log(res)
           if (res.SecureModeNeeded){
             window.location.replace(res.SecureModeRedirectURL)
           }
@@ -116,17 +119,21 @@ class TeamPage extends Component {
       }
       else{
         var options = { url:'http://localhost:3001/mangopay/createWebPayIn' , header: headers, form:form };
+        console.log(options)
         request.post(options,(err, httpResponse, body) => {
+          console.log('!!!!')
           const res = JSON.parse(body);
+          console.log(res)
           if(res.RedirectURL){
             window.location.replace(res.RedirectURL)
           }
-          else if(res.PaidWithCagnotte){
+          else {if(res.PaidWithCagnotte){
             this.setState({ 'paystep':2, paymentValid:true})
           }
           else{
             this.setState({ 'paystep':2, paymentValid:false})
           }
+        }
 
         });
       }
