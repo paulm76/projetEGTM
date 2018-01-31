@@ -17,13 +17,12 @@ router.use(cors());
 router.get('/', function(req, res, next) {
   var escapeName = req.query.escape.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ");
   var allRes = [];
-  console.log(escapeName);
   connection.query('SELECT * FROM escape WHERE Nom=\'' + escapeName + '\';', function(escapeErr, escape){
   	if (!escapeErr){
       var escapeJSON = JSON.stringify(escape);
       console.log(escapeJSON);
       allRes.push(escapeJSON);
-      connection.query('SELECT Nom, Photo, Difficulte, Theme, Nb_places_max, Nb_places_min FROM room WHERE Escape_game=\'' + escapeName + '\';', function(roomsErr,rooms){
+      connection.query('SELECT Nom, Difficulte, Theme, Nb_places_max, Nb_places_min FROM room WHERE Etablissement=\'' + escapeName + '\';', function(roomsErr,rooms){
         if(!roomsErr){
           var roomsJSON = JSON.stringify(rooms);
           allRes.push(roomsJSON);

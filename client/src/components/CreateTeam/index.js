@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Button,Message,Dropdown,Container,Label,TextArea} from 'semantic-ui-react';
 import {  Link,  withRouter } from 'react-router-dom';
 import Form from '../Form';
-import moment from 'moment'
+import moment from 'moment';
 //import {DatePicker, DatePickerInput} from 'rc-datepicker';
 //import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import DatePicker from 'react-datepicker';

@@ -25,18 +25,14 @@ class RoomPage extends React.Component {
 
   componentWillMount() {
     var query = this.props.location.search
-  	var room = query.substring(6, query.length);
-    console.log(room);
-	  var headers = new Headers();
+  	var room = query.substring(6, query.length);	  var headers = new Headers();
 	  var init = { method: 'GET', header: 'headers', mode: 'cors', cache: 'default' };
 	  fetch('http://localhost:3001/room?room=' + room, init).then(res => res.json()).then(roomInfo => this.setState({ roomInfo: roomInfo, }));
   }
 
   render() {
     const { contextRef } = this.state.contextRef;
-console.log(this.state.roomInfo);
    	if (this.state.roomInfo && this.state.roomInfo!="" && this.state.roomInfo!="null"){
-console.log(this.state.roomInfo);
 	    var room = JSON.parse(this.state.roomInfo[0]);
 	    var escape = JSON.parse(this.state.roomInfo[1]);
 	    var teams = JSON.parse(this.state.roomInfo[2]);

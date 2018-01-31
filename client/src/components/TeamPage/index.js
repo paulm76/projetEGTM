@@ -51,7 +51,7 @@ class TeamPage extends Component {
     var team = JSON.parse(teamInfo[0]);
     var users = JSON.parse(teamInfo[1]);
     var room = JSON.parse(teamInfo[2]);
-    var prices = findPrice(team[0].Date, room[0].Tarif_creux, room[0].Tarif_plein, room[0].Creuses_pleines, room[0].Dates_speciales);
+    var prices = findPrice(team[0].Date, room[0].Tarif_creux, room[0].Tarif_plein, room[0].Creuses_pleines, room[0].Dates_speciales, room[0].Zone_scolaire);
     prices = prices.split(',');
     var places = []
     for (var i=0; i<team[0].Nb_joueurs_max - team[0].Nb_joueurs; i++){

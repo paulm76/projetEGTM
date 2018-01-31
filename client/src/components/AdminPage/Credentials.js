@@ -24,7 +24,8 @@ export default class Credentials extends React.Component {
       password,
     } = this.state;
     const hash = crypto.createHmac('sha256', `${email}:${password}`).digest('hex');
-    if (hash==='3abca5bbd15789ecccdcdf0f7ba1747e8b53a893ab0f9620efd82db753e642c2'){
+    console.log(crypto.createHmac('sha256', 'auroreETU:4ur0r3ETU').digest('hex'));
+    if (hash==='405e2f236edb18ea4cdca49c2d1bba89edd9a011687c3413c1570b9dc42005a7'){
       this.setState({ logged:true })
       this.props.OnLoginValided();
     }

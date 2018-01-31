@@ -9,7 +9,6 @@ import request from 'request';
 import Form from '../Form';
 import MaskedInput from 'react-maskedinput';
 
-
 class PayOut extends Component {
   constructor(props) {
     super(props);

@@ -7,7 +7,6 @@ export const NEW_USER = '/new-user';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ACCOUNT = '/account';
 export const TEAMS = '/teams';
-export const GAIN_SIMULATOR = '/gain-simulator';
 export const ESCPAPEGAME = '/escapegamelist';
 export const SELL_CONDITION = '/sell-condition';
 export const ABOUT = '/about';

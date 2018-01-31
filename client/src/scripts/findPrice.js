@@ -1,8 +1,10 @@
-import formatedDate from './formatedDate.js'
+import formatedDate from './formatedDate.js';
+import datesSpecialesA from '../constants/Dates_Speciales_A.txt';
+import datesSpecialesB from '../constants/Dates_Speciales_B.txt';
+import datesSpecialesC from '../constants/Dates_Speciales_C.txt';
 
-export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, datesSpeciales){
+export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, datesSpecialesBool, zoneScolaire){
 	var day = date.split('T')[0];
-	var daySplit = day.split('-');
 	var time = date.split('T')[1];
 	var timeSplit = time.split(':');
 	if (tarifsPlein && tarifsPlein!='null'){
@@ -14,9 +16,20 @@ export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, da
 				return tarifsPlein;
 			}
 		}
-		if (datesSpeciales && datesSpeciales != null){
-			datesSpeciales = splitDates(datesSpeciales);
-			if (isSpecialDate(daySplit, datesSpeciales)){
+		var datesSpeciales;
+		if (datesSpecialesBool && datesSpecialesBool != 0){
+			switch (zoneScolaire) {
+				case "A":
+					datesSpeciales = datesSpecialesA;
+				break;
+				case "B":
+					datesSpeciales = datesSpecialesB;
+				break;
+				case "C":
+					datesSpeciales = datesSpecialesC;
+				break;
+			}
+			if (isSpecialDate(day, datesSpeciales)){
 				return tarifsPlein;
 			}
 		}
@@ -45,37 +58,21 @@ function isFullTime(time, timeChange){
 	return false;
 }
 
-function splitDates(datesSpeciales){
-	var datesSpecialesLen = datesSpeciales.length;
-	var datesSpecialesFormated = [];
-	for (var i=0; i<datesSpecialesLen; i++){
-		if (typeof datesSpeciales[i] == "string"){
-			datesSpecialesFormated.push(datesSpeciales[i].split('-'));
-		} else {
-			var dateLen = datesSpeciales[i].length;
-			var temp = [];
-			for (var j=0; j<dateLen; j++){
-				temp.push(datesSpeciales[i][j].split('-'));
-			}
-			datesSpecialesFormated.push(temp);
-		}
-	}
-	return datesSpecialesFormated;
-}
-
-function isSpecialDate(day, datesSpeciales){
+function isSpecialDate(day,datesSpeciales){
+	datesSpeciales=datesSpeciales.split(',');
 	var datesSpecialesLen = datesSpeciales.length;
 	for (var i=0; i<datesSpecialesLen; i++){
-		if (typeof datesSpeciales[i][0] == "string"){
-			if (datesSpeciales[i][0] == day[0] && datesSpeciales[i][1] == day[1] && datesSpeciales[i][2] == day[2]){
+		datesSpeciales[i]=datesSpeciales[i].split('/');
+		if (datesSpeciales[i].length==1){
+			if(datesSpeciales[i]=day){
 				return true;
 			}
-		} else {
-			var dateLen = datesSpeciales[i].length;
-			if (datesSpeciales[i][0][0] <= day[0] && datesSpeciales[i][1][0] >= day[0] && datesSpeciales[i][0][1] <= day[0] && datesSpeciales[i][1][1] >= day[0] && datesSpeciales[i][0][2] <= day[0] && datesSpeciales[i][1][2] >= day[0]){
+		}
+		else{
+			if(datesSpeciales[i][0]<=day && day<=datesSpeciales[i][1]){
 				return true;
 			}
 		}
 	}
-	return false;
+	return false;	
 }

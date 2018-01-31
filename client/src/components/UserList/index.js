@@ -43,7 +43,6 @@ export default class UserList extends React.Component {
     </BootstrapTable>
 
   );
-
   }
 }
 

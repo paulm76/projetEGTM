@@ -8,7 +8,7 @@ import Form from '../Form';
 import PayOut from '../PayOut';
 import { sessionService } from 'redux-react-session';
 import { Input, Button, TextArea,  Select, Checkbox, Loader } from 'semantic-ui-react';
-
+import formatedDate from '../../scripts/formatedDate.js';
 
 export default class MyAccount extends React.Component {
 
@@ -48,29 +48,29 @@ export default class MyAccount extends React.Component {
 
   render() {
 
-if (this.state.user){
-    return (
-        <div className="My-Account-page">
-          <div className="Account-Parameters">
-          <h2> Paramètres du compte </h2>
-          <Form onSubmit={this.handleSubmit}>
-          <h3> Vos informations </h3>
-            <p>{this.state.user.Prenom}</p>
-            <p>{this.state.user.Nom}</p>
-            <p>Né le {new Date(this.state.user.Date_naissance).toString()}</p>
-            <p>Inscrit le {new Date(this.state.user.Date_inscription).toString()}</p>
-            <p>Partie jouées :{this.state.user.Nb_parties}</p>
-            </Form>
-            <PasswordChange userid={this.state.userid}/>
+  if (this.state.user){
+      return (
+          <div className="My-Account-page">
+            <div className="Account-Parameters">
+            <h2> Paramètres du compte </h2>
+            <Form onSubmit={this.handleSubmit}>
+            <h3> Vos informations </h3>
+              <p>{this.state.user.Prenom}</p>
+              <p>{this.state.user.Nom}</p>
+              <p>Né le {formatedDate(this.state.user.Date_naissance)}</p>
+              <p>Inscrit le {formatedDate(this.state.user.Date_inscription)}</p>
+              <p>Partie jouées :{this.state.user.Nb_parties}</p>
+              </Form>
+              <PasswordChange userid={this.state.userid}/>
+            </div>
+            <PayOut />
           </div>
-          <PayOut />
-        </div>
-    );
+      );
+    }
+    else{
+      return(
+        <Loader active />
+      )
+    }
   }
-  else{
-    return(
-      <Loader active />
-    )
-  }
-}
 }

@@ -9,7 +9,6 @@ import SignInPage from '../SignIn';
 import CreateTeamPage from '../CreateTeam';
 import PasswordForgetPage from '../PasswordForget';
 import MyAccount from '../MyAccount';
-import GainSimulator from '../GainSimulator';
 import TeamPage from '../TeamPage';
 import RoomPage from '../RoomPage';
 import EscapePage from '../EscapePage';
@@ -21,8 +20,11 @@ import { sessionService } from 'redux-react-session';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import PaymentValid from '../PaymentValid';
-
-
+import PayOut from '../PayOut';
+import SellCondition from '../SellCondition';
+import About from '../About';
+import ContactUs from '../ContactUs';
+import EscapeGameList from '../EscapeGameList';
 
 import './index.css';
 
@@ -81,10 +83,6 @@ class App extends Component {
               authenticated={this.props.authenticated}
             />
             <Route
-              exact path={routes.GAIN_SIMULATOR}
-              component={GainSimulator}
-            />
-            <Route
               exact path={routes.TEAM_PAGE}
               component={TeamPage}
             />
@@ -104,6 +102,26 @@ class App extends Component {
             <Route
               exact path={routes.PAYMENT_DONE}
               component={PaymentValid}
+            />
+
+            <Route
+              exact path={routes.SELL_CONDITION}
+              component={SellCondition}
+            />
+
+            <Route 
+              exact path={routes.ABOUT}
+              component={About}
+            />
+
+            <Route 
+              exact path={routes.CONTACT}
+              component={ContactUs}
+            />
+
+            <Route 
+              exact path={routes.ESCPAPEGAME}
+              component={EscapeGameList}
             />
 
             <Route component={PageNotFound}/>

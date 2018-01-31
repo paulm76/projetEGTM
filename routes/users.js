@@ -15,9 +15,10 @@ router.use(function(req, res, next){
 router.use(cors());
 
 router.get('/', function(req, res, next) {
-      connection.query('SELECT utilisateur.id, utilisateur.Nom, utilisateur.Prenom, utilisateur.Mail, utilisateur.Date_inscription, utilisateur.Date_naissance, utilisateur.Nb_parties FROM utilisateur', function (errUser,user){
+      connection.query('SELECT utilisateur.id, utilisateur.Nom, utilisateur.Prenom, utilisateur.Mail, utilisateur.Date_inscription, utilisateur.Date_naissance, utilisateur.Nb_parties FROM utilisateur;', function (errUser,user){
         if (!errUser){
           var userJSON = JSON.stringify(user);
+          console.log(userJSON);
           res.send(userJSON)
         } else {
           console.log(errUser);

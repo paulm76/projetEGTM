@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
           console.log(errUser);
         }
         var roomFind = findRoomName(teamJSON);
-        connection.query('SELECT room.*, escape.Adresse, escape.Code_postal, escape.Ville, escape.Latitude, escape.Longitude, escape.Creuses_pleines, escape.Dates_spéciales FROM room INNER JOIN escape ON room.Etablissement=escape.Nom WHERE room.Nom=\'' + roomFind + '\';', function (errRoom,room){
+        connection.query('SELECT room.*, escape.Adresse, escape.Code_postal, escape.Ville, escape.Latitude, escape.Longitude, escape.Creuses_pleines, escape.Zone_scolaire, escape.Dates_spéciales FROM room INNER JOIN escape ON room.Etablissement=escape.Nom WHERE room.Nom=\'' + roomFind + '\';', function (errRoom,room){
           if (!errRoom){
             var roomJSON = JSON.stringify(room);
             allRes.push(roomJSON);

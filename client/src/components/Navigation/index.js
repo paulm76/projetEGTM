@@ -21,7 +21,6 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-
     if(this.props.Auth){
       var init = { method: 'GET', mode: 'cors', cache: 'default' };
       sessionService.loadUser().then(user=>{
@@ -46,7 +45,6 @@ class Navigation extends Component {
 
   render() {
     const {Auth} = this.state;
-    console.log(this.state)
   	return(
       <div>
       <Menu secondary>
@@ -55,9 +53,6 @@ class Navigation extends Component {
         </Menu.Item>
         <Menu.Item position="right">
           <Link to={routes.ESCPAPEGAME}>Les escape games</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to={routes.GAIN_SIMULATOR}>Simulateur de gains</Link>
         </Menu.Item>
         {Auth &&
           <Menu.Item>
@@ -93,7 +88,6 @@ sessionService.loadSession().then(currentSession => {
   jwt.verify(token, 'test', function(err, decoded) {
     if(err){console.log(err)}
     if(decoded){
-      console.log(decoded)
       return(
         <div>
              <NavigationNonAuth />
@@ -121,6 +115,36 @@ Navigation.contextTypes = {
   authUser: PropTypes.object,
 };
 */
+const NavigationAuth = () =>
+  <Menu secondary>
+    <Menu.Item>
+      <Link to={routes.FRONTPAGE}><img src="public/images/logoEscapeTeamUPblanc.png" style={{ height: '60px', width: 'auto', marginRight: '10px' }}/>Escape Team UP</Link>
+    </Menu.Item>
+    <Menu.Item position="right">
+      <Link to={routes.ESCPAPEGAME}>Les escape games</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to={routes.TEAMS}>Mes equipes</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to={routes.ACCOUNT}>Mon compte</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <SignOutButton />
+    </Menu.Item>
+  </Menu>
 
+const NavigationNonAuth = () =>
+  <Menu secondary>
+    <Menu.Item>
+      <Link to={routes.FRONTPAGE}><img src="public/images/logoEscapeTeamUPblanc.png" style={{ height: '60px', width: 'auto', marginRight: '10px' }}/>Escape Team UP</Link>
+    </Menu.Item>
+    <Menu.Item position="right">
+      <Link to={routes.ESCPAPEGAME}>Les escape games</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to={routes.SIGN_IN}>Se connecter</Link>
+    </Menu.Item>
+  </Menu>
 
 export default Navigation;

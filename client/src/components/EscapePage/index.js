@@ -8,7 +8,6 @@ import GoogleMapMarker from '../GoogleMapMarker';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import findPrice from '../../scripts/findPrice.js';
-import TeamMembers from '../TeamMembers';
 import formatePictureName from '../../scripts/formatePictureName.js';
 
 class TeamPage extends Component {
