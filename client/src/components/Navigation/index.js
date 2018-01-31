@@ -54,7 +54,7 @@ class Navigation extends Component {
         </Menu.Item>
         {Auth &&
           <Menu.Item>
-            <Link to={routes.TEAMS}>Mes equipes</Link>
+            <Link to={routes.CREATE_TEAM}>Créer une equipe</Link>
           </Menu.Item>}
         {Auth &&<Menu.Item>
           <Link to={routes.ACCOUNT}>Mon compte</Link>
