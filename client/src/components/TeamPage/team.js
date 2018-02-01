@@ -59,6 +59,7 @@ class Team extends Component {
       return <PageNotFound />
     }
       room[0].Photo = formatePictureName(room[0].Etablissement, room[0].Nom);
+      const { contextRef } = this.state.contextRef;
       const placesReserved = users.filter(user => user.id===userid).reduce((placesTotal,user)=>placesTotal+user.Places_prises,0)
 
 	    var realPrice = this.state.price;
@@ -117,7 +118,7 @@ class Team extends Component {
 
 	          <Grid.Column computer='5'>
 	            <div ref={this.handleContextRef}>
-	              <Sticky context={this.state.contextRef}>
+	              <Sticky context={contextRef}>
 	                <Card fluid>
 	                  <Image src={room[0].Photo}/>
 	                  <Card.Content>

@@ -63,7 +63,7 @@ router.post('/append', function(req, res) {
       connection.query(`INSERT INTO joueur_equipe (id_joueur, id_equipe, montantEscape, Places_prises, Prix, txId) VALUES(${userid}, ${teamid}, ${montantEscape} , ${places}, ${prix}, ${txId})`, function (err,result){
         if (!err){
           res.send(true)
-          connection.query(`UPDATE equipe SET Nb_joueurs=Nb_joueurs+1 WHERE id=${teamid};`)
+          connection.query(`UPDATE equipe SET Nb_joueurs=Nb_joueurs+${places} WHERE id=${teamid};`)
         } else {
           console.log(errUser);
         }
