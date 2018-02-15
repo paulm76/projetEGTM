@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { List } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import EscapeItem from '../EscapeItem';
 
 export default class EscapeGameList extends Component {
@@ -19,12 +20,16 @@ export default class EscapeGameList extends Component {
   }
 
   render() {
-    console.log(this.state.escapes);
     if (!this.state.escapes){
       return(
         <p></p>
       );
     } else {
+      var escapesLen = this.state.escapes.length;
+      for (var i=0; i<escapesLen; i++){
+        this.state.escapes[i].Link = this.state.escapes[i].Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
+      }
+      console.log(this.state.escapes);
       return (
         <div>
           <h1 style={{ paddingLeft: '100px' }}>Tous les escapes games</h1>

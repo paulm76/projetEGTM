@@ -15,7 +15,7 @@ router.use(function(req, res, next){
 router.use(cors());
 
 router.get('/', function(req, res, next) {
-  var escapeName = req.query.escape.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ");
+  var escapeName = req.query.escape.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ").replace('\'','\\\'');
   var allRes = [];
   connection.query('SELECT * FROM escape WHERE Nom=\'' + escapeName + '\';', function(escapeErr, escape){
   	if (!escapeErr){

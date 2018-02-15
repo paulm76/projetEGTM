@@ -15,13 +15,14 @@ router.use(function(req, res, next){
 router.use(cors());
 
 router.get('/', function(req, res, next) {
-  var roomName = req.query.room.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ");
+  var roomName = req.query.room.replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ").replace("_"," ").replace('\'','\\\'');
   var allRes = [];
   connection.query('SELECT * FROM room WHERE Nom=\'' + roomName + '\';', function(errRoom, room){
   	if (!errRoom){
       var roomJSON = JSON.stringify(room);
       allRes.push(roomJSON);
       var escapeName = findEscapeName(roomJSON);
+      escapeName = escapeName.replace('\'','\\\'');
       console.log(escapeName);
       connection.query('SELECT * FROM escape WHERE Nom=\'' + escapeName + '\';', function(errEscape, escape){
         if (!errEscape){

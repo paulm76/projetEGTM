@@ -47,24 +47,23 @@ export default class MyAccount extends React.Component {
   }
 
   render() {
-
   if (this.state.user){
-      return (
-          <div className="My-Account-page">
-            <div className="Account-Parameters">
-            <h2> Paramètres du compte </h2>
-            <Form onSubmit={this.handleSubmit}>
-            <h3> Vos informations </h3>
-              <p>{this.state.user.Prenom}</p>
-              <p>{this.state.user.Nom}</p>
-              <p>Né le {formatedDate(this.state.user.Date_naissance)}</p>
-              <p>Inscrit le {formatedDate(this.state.user.Date_inscription)}</p>
-              <p>Partie jouées :{this.state.user.Nb_parties}</p>
-              </Form>
-              <PasswordChange userid={this.state.userid}/>
-            </div>
-            <PayOut />
+    return (
+        <div className="My-Account-page">
+          <div className="Account-Parameters">
+          <h2> Paramètres du compte </h2>
+          <Form onSubmit={this.handleSubmit}>
+          <h3> Vos informations </h3>
+            <p>{this.state.user.Prenom}</p>
+            <p>{this.state.user.Nom}</p>
+            <p>Né le {formatedDate(this.state.user.Date_naissance)}</p>
+            <p>Inscrit le {formatedDate(this.state.user.Date_inscription)}</p>
+            <p>Partie jouées :{this.state.user.Nb_parties}</p>
+            </Form>
+            <PasswordChange userid={this.state.userid}/>
           </div>
+          <PayOut />
+        </div>
       );
     }
     else{

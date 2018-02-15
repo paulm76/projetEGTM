@@ -64,8 +64,7 @@ class CreateTeamForm extends Component {
       //data=response;
       //console.log(data);
     });
-    sessionService.loadUser().then(user=>{this.setState({userid:user.id});
-  console.log(user.id)});
+    sessionService.loadUser().then(user=>this.setState({userid:user.id}));
   }
 
   handleChange(date) {
@@ -92,16 +91,17 @@ class CreateTeamForm extends Component {
 
 
     var url="http://localhost:3001/createteam";
-    console.log("userid"+userid);
+    var body = 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&nb_joueurs_actuel='+nb_joueurs_actuel+'&date='+startDate+'&room='+room+'&nomReservation='+nomReservation+'&emailReservation='+emailReservation+'&description='+description+'&userid='+userid;
+    console.log(body)
     fetch(url, {
       method: 'post',
       headers: {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       mode: 'cors',
-      body: 'titre='+titre+'&nb_joueurs_max='+nb_joueurs_max+'&nb_joueurs_actuel='+nb_joueurs_actuel+'&date='+startDate+'&room='+room+'&nomReservation='+nomReservation+'&emailReservation='+emailReservation+'&description='+description+'&userid='+userid
+      body: { body }
     })
-  };
+  }
 
   render() {
 
@@ -178,7 +178,7 @@ value:'12'
 //chercher un react date picker
 this.handleChange = this.handleChange.bind(this);
 /*  const option = _.find(options, { value })
-  console.log(`Changed to text: ${option.text}`)
+  console.log(Changed to text: ${option.text})
 }*/
 /*
 {(event, data) => {
@@ -267,4 +267,4 @@ return(
 export default withRouter(CreateTeamPage);
 export {
   CreateTeamForm,
-};
+}

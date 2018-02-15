@@ -13,7 +13,7 @@ export default class EscapeItem extends React.Component {
   render(){
 
     const escape = this.props.escape;
-    var linkToEscape = escape.Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
+    var linkToEscape = '/escape?escape=' + escape.Nom.replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_').replace(' ','_');
     var imagePath = formatePictureName(escape.Nom, escape.Nom);
     var itemStyle = { width: '270px', height: '270px', borderTop: 'none', paddingTop: '15px', marginLeft: '20px' };
     var contentStyle = { width: '270px', height: '270px', backgroundImage: "url('" + imagePath + "')", backgroundSize: '270px 270px', backgroundRepeat: 'no-repeat', color:'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black', paddingLeft: '10px', };

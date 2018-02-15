@@ -85,10 +85,10 @@ router.post('/',function(req, res,next) {
   //il faut description et titre aussi a voir quand base de donnée a jour
   query(connection,requete)
   .then(function()
-  {
-    res.send("ok");
-  })
-  .catch(next);
-});
+    {
+      res.send("ok");
+    })
+    .catch(next);
+  });
 
 module.exports = router;

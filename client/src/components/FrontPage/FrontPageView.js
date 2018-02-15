@@ -190,7 +190,60 @@ class FrontPageView extends Component {
       if (this.props.teams != ''){
         this.stateUpdate(this.props.teams);
       }
-      return (<p></p>);
+      return (
+        <FrontPageForm>
+        <div>
+          <FilterForm>
+            <FilterContainer style={{ display: "none" }}>
+              <Label for="citySelect">Ville</Label>
+              <Select id="citySelect" onChange={(event) => this.onSelectCity(event)} options={cityArray}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="dateInput">Date</Label>
+              <Input id="dateInput" type="date" onChange={(event) => this.onSelectDate(event)} />
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="playerNbInput">Nombre de place voulues</Label>
+              <Input id="playerNbInput" type="number" min="1" onChange={(event) => this.onSelectPlace(event)} />
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="themeSelect">Theme</Label>
+              <Select id="themeSelect" onChange={(event) => this.onSelectTheme(event) } options={themeArray}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="difficultySelect">Difficulté</Label>
+              <Select id="difficultySelect" onChange={(event) => this.onSelectDifficulty(event)} options={difficultyArray}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="priceMaxInput">Prix maximum</Label>
+              <Input id="priceMaxInput" type="number" onChange={(event) => this.onSelectMaxPrice(event)}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="hourMinInput">Heure minimum</Label>
+              <Input id="hourMinInput" type="number" onChange={(event) => this.onSelectMinHour(event)}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Label for="hourMaxInput">Heure maximum</Label>
+              <Input id="hourMaxInput" type="number" onChange={(event) => this.onSelectMaxHour(event)}/>
+            </FilterContainer>
+
+            <FilterContainer>
+              <Button onClick={this.submitFilters} content="Filtrer" type="button" disable/>
+            </FilterContainer>
+          </FilterForm>
+        </div>
+        <div>
+          <h1 style={{ marginLeft: '15px' }}>Aucune équipe </h1>
+        </div>
+        </FrontPageForm>
+      );
     } else {
       return(
       <FrontPageForm>

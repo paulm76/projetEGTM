@@ -45,7 +45,7 @@ class TeamPage extends Component {
       }
       
       var imagePathEscape = formatePictureName(escape[0].Nom, escape[0].Nom);
-console.log(this.state.escapeInfo);
+
 	    return (
 	      <div style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
 	      	<Grid centered columns={2} stackable>
