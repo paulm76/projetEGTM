@@ -44,7 +44,7 @@ class TeamMembers extends React.Component {
           </svg></span>)}
 
 
-          <span>{(this.state.libres && libres.length>1) && <span style={{ display: 'flex' }}>{libres.map((i)=>
+          <span>{(this.state.libres && libres.length>0) && <span style={{ display: 'flex' }}>{libres.map((i)=>
             <svg width={64*this.props.ratio} height={84*this.props.ratio} style={{flexBasis:'auto'}}>
           <defs>
             <pattern id="image0" x="0" y="0" height="100%" width="100%">

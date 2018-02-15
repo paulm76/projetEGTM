@@ -444,14 +444,19 @@ router.post('/createWebPayIn', function(req, res, next) {
 });
 
 router.get('/settleTransfers', function(req, res, next) {
+  console.log(req.query)
   const teamid=req.query.teamid;
   connection.query('SELECT  room.Etablissement, equipe.id_admin  FROM room INNER JOIN equipe ON room.Nom=equipe.Room WHERE equipe.id=?', [teamid], function (errTeam,team){
+    console.log(team[0])
     connection.query('SELECT  *  FROM joueur_equipe WHERE id_equipe=?', [teamid], function (errMembers,members){
+      console.log(members)
       connection.query('SELECT  UserID as mangopayId, WalledID as walledId  FROM utilisateur WHERE id=?', [team[0].id_admin], function (errCreator,creator){
-      members.map(function(member){
+      members.map((member)=>{
         connection.query('SELECT  UserID as mangopayId, WalledID as walledId  FROM utilisateur WHERE id=?', [member.id_joueur], function (errUser,user){
+          console.log(user[0])
           connection.query('SELECT  MangoPayID as mangopayId, WalledID as walledId ,Commission  FROM escape WHERE Nom=?', [team[0].Etablissement], function (errEscape,escape){
           if (!errUser && user.length==1 && !errEscape && escape.length==1 && member.Prix){
+            console.log(escape[0])
             if (member.montantEscape > 0){
               api.Transfers.create({
                 "AuthorId":  user[0].mangopayId,
@@ -468,19 +473,19 @@ router.get('/settleTransfers', function(req, res, next) {
                 }
               )
             }
-              connection.query(`UPDATE utilisateur SET Cagnotte=Cagnotte+${(member.Prix/member.Places_prises-members[members.length-1].payed/members[members.length-1].Places_prises)*member.Places_prises} WHERE id = ${member.id_joueur}`)
+              connection.query(`UPDATE utilisateur SET Cagnotte=Cagnotte+${(member.Prix/member.Places_prises-members[members.length-1].Prix/members[members.length-1].Places_prises)*member.Places_prises} WHERE id = ${member.id_joueur}`)
               api.Transfers.create({
                 "AuthorId":  user[0].mangopayId,
                 "DebitedFunds": {
                 "Currency": "EUR",
-                "Amount": (members[members.length-1].payed/members[members.length-1].Places_prises -member.montantEscape)*100
+                "Amount": (members[members.length-1].Prix/members[members.length-1].Places_prises -member.montantEscape)*100
                 },
                 "Fees": {
                 "Currency": "EUR",
                 "Amount": 0
                 },
                 "DebitedWalletId": user[0].walletId,
-                "CreditedWalletId": creator.walledId
+                "CreditedWalletId": creator[0].walledId
               });
             }
           });

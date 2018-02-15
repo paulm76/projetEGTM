@@ -27,7 +27,7 @@ export default class EscapeItem extends React.Component {
               <List.Header as="h3" style={ headerStyle }>
                 <p>&nbsp;&nbsp;{escape.Nom}</p>
               </List.Header>
-                
+
             </List.Description>
               <p><strong>
                 &nbsp;&nbsp;&nbsp;&nbsp;<br />
