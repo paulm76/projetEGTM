@@ -111,7 +111,7 @@ class FrontPageView extends Component {
           }
           if (this.state.difficulty != ''){
             difficultyBool = false;
-            if (this.state.difficultyBool == this.state.teamsSave[i].Difficulte){
+            if (this.state.difficulty == this.state.teamsSave[i].Difficulte){
               difficultyBool = true;
             }
           }

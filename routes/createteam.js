@@ -8,7 +8,6 @@ function query(connection, sql) {
         console.log(error);
         throw error;
       }
-      console.log(results);
       resolve(results);
     });
   });
@@ -16,10 +15,9 @@ function query(connection, sql) {
 
 router.get('/getroom',function(req,res,next)
 {
-  var requete="SELECT Nom FROM room";
+  var requete="SELECT room.Nom, room.Nb_places_min, room.Nb_places_max, room.Tarif_creux, room.Tarif_plein, escape.Nom AS Etablissement, escape.Creuses_pleines, escape.Zone_scolaire, escape.Dates_spéciales FROM room JOIN escape ON escape.nom=room.Etablissement ORDER BY escape.Nom;";
   connection.query(requete,function(err,result){
     if(err) throw err;
-    console.log(result);
 
     res.send(result);
 
@@ -30,14 +28,14 @@ router.post('/',function(req, res,next) {
   /*------------------data ------------------------*/
   console.log("ok");
   var titre="erreur prenom";
-  titre=req.body.titre;
+  titre=req.query.titre;
   var nb_joueurs_actuel=0;
-  nb_joueurs_actuel=req.body.nb_joueurs_actuel;
+  nb_joueurs_actuel=req.query.nb_joueurs_actuel;
   var nb_joueurs_max=0;
-  nb_joueurs_max=req.body.nb_joueurs_max;
+  nb_joueurs_max=req.query.nb_joueurs_max;
 
   var date="erreur date";
-  date=req.body.date;
+  date=req.query.date;
   date=new Date(parseInt(date));
   //travailler la date pour avoir une date inserable dans mysql
   date = date.getUTCFullYear() + '-' +
@@ -50,19 +48,19 @@ router.post('/',function(req, res,next) {
   //console.log(time.toString());
   var room="erreur room";
   //var country="erreur country";
-  //password=req.body.password;
-  //country=req.body.country;
-  room=req.body.room;
+  //password=req.query.password;
+  //country=req.query.country;
+  room=req.query.room;
   var nomReservation="erreur nom reservation";
-  nomReservation=req.body.nomReservation;
+  nomReservation=req.query.nomReservation;
   var emailReservation="erreur email reservation";
-  emailReservation=req.body.emailReservation;
+  emailReservation=req.query.emailReservation;
   var description="erreur description";
-  description=req.body.description;
+  description=req.query.description;
 
   var id_admin=0;
   //console.log("userid");
-  id_admin=req.body.userid;
+  id_admin=req.query.userid;
 //console.log("userid2");
 
   console.log(titre);

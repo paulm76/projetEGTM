@@ -4,8 +4,8 @@ import datesSpecialesB from '../constants/Dates_Speciales_B.txt';
 import datesSpecialesC from '../constants/Dates_Speciales_C.txt';
 
 export default function findPrice(date, tarifsCreux, tarifsPlein, timeChange, datesSpecialesBool, zoneScolaire){
-	var day = date.split('T')[0];
-	var time = date.split('T')[1];
+	var day = date.toString().split('T')[0];
+	var time = date.toString().split('T')[1];
 	var timeSplit = time.split(':');
 	if (tarifsPlein && tarifsPlein!='null'){
 		if (isWeekEnd(date)){
